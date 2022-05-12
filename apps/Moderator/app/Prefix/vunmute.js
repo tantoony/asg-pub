@@ -12,7 +12,7 @@ class vunMute extends DotCommand {
             examples: ["vunmute 674565119161794560"],
             category: "Moderasyon",
             aliases: ["vun"],
-            accaptedPerms: ["root", "owner", "cmd-ceo","cmd-double","cmd-single", "cmd-mute"],
+            accaptedPerms: ["vmute", "yt"],
             cooldown: 10000
         })
     }
