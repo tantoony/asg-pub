@@ -60,11 +60,11 @@ class UserUpdate extends ClientEvent {
             await member.setNickname(member.displayName.replace(client.config.point.tagged, client.config.point.default));
             await member.roles.remove(this.data.roles["taglı"]);
             if (this.data.other["taglıAlım"] && !member.roles.cache.has(this.data.roles["vip"] && !member.roles.cache.has(this.data.roles["booster"]))) {
-                await member.roles.remove(member.roles.cache.filter(r => r.editable).array());
+                await member.roles.remove(member.roles.cache.filter(r => r.editable).map(r => r.id));
                 await member.roles.add(this.data.roles["welcome"]);
             }
             if (member.roles.highest.rawPosition > guild.roles.cache.get(this.data.roles["booster"]).rawPosition) {
-                await member.roles.remove(member.roles.cache.filter(r => r.editable).filter(r => r.rawPosition > guild.roles.cache.get(this.data.roles["booster"]).rawPosition).array());
+                await member.roles.remove(member.roles.cache.filter(r => r.editable).filter(r => r.rawPosition > guild.roles.cache.get(this.data.roles["booster"]).rawPosition).map(r => r.id));
                 await guild.channels.cache.get(this.data.channels["ast-salanyetkililer"]).send(new Discord.MessageEmbed().setDescription(`${member} yetkideyken tagı saldı!`))
             }
             const embed = new Discord.MessageEmbed().setColor('#ff0000').setTitle("Tagımızı Saldı!").setDescription(`${member} tagımızı saldı!`).setThumbnail(newUser.displayAvatarURL());
@@ -74,11 +74,11 @@ class UserUpdate extends ClientEvent {
             await member.setNickname(member.displayName.replace(client.config.point.tagged, client.config.point.default));
             await member.roles.remove(this.data.roles["taglı"]);
             if (this.data.other["taglıAlım"] && !member.roles.cache.has(this.data.roles["vip"] && !member.roles.cache.has(this.data.roles["booster"]))) {
-                await member.roles.remove(member.roles.cache.filter(r => r.editable).array());
+                await member.roles.remove(member.roles.cache.filter(r => r.editable).map(r => r.id));
                 await member.roles.add(this.data.roles["welcome"]);
             }
             if (member.roles.highest.rawPosition > guild.roles.cache.get(this.data.roles["booster"]).rawPosition) {
-                await member.roles.remove(member.roles.cache.filter(r => r.editable).filter(r => r.rawPosition > guild.roles.cache.get(this.data.roles["booster"]).rawPosition).array());
+                await member.roles.remove(member.roles.cache.filter(r => r.editable).filter(r => r.rawPosition > guild.roles.cache.get(this.data.roles["booster"]).rawPosition).map(r => r.id));
                 await guild.channels.cache.get(this.data.channels["ast-salanyetkililer"]).send(new Discord.MessageEmbed().setDescription(`${member} yetkideyken tagı saldı!`))
             }
             const embed = new Discord.MessageEmbed().setColor('#ff0000').setTitle("Tagımızı Saldı!").setDescription(`${member} tagımızı saldı!`).setThumbnail(newUser.displayAvatarURL());
