@@ -9,7 +9,7 @@ class Avatar extends DotCommand {
             examples: ["temizle 10", "temizle 100"],
             category: "Düzen",
             aliases: ["sil"],
-            accaptedPerms: ["root", "owner","cmd-ceo", "cmd-dobule"],
+            accaptedPerms: ["yt"],
             cooldown: 10000
         });
     }
