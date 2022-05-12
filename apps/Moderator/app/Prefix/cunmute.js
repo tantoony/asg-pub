@@ -11,7 +11,7 @@ class cunMute extends DotCommand {
             usage: "cunmute etiket/id",
             examples: ["cunmute 674565119161794560"],
             category: "Moderasyon",
-            aliases: ["cun", "unmute"],
+            aliases: ["cun"],
             accaptedPerms: ["cmute", "yt"],
             cooldown: 10000
         })
@@ -20,7 +20,7 @@ class cunMute extends DotCommand {
         let mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!mentioned) return await message.react("🚫");// message.react(data.emojis["error"].split(':')[2].replace('>', ''));
         if (message.guild.members.cache.get(vData.executor).roles.highest.rawPosition > message.member.roles.highest.rawPosition) return await message.react("🚫");// message.react(client.data.emojis["error"].split(':')[2].replace('>', ''));
-        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "CMUTE" }, { $set: { until: new Date() } });
+        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "CMUTE" }, { until: { $set: new Date() } });
         await mentioned.roles.remove(client.data.roles["muted"]);
         await message.react("👍");
         /*
