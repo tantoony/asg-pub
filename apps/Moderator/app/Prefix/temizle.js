@@ -1,7 +1,5 @@
-const Discord = require('discord.js');
-const Command = require("../../../Base/Command");
-const low = require('lowdb');
-class Avatar extends Command {
+const { DotCommand } = require("../../../../base/utils");
+class Avatar extends DotCommand {
 
     constructor(client) {
         super(client, {
@@ -16,25 +14,23 @@ class Avatar extends Command {
         });
     }
 
-    async run(client, message, args) {
-        const emojis = await low(client.adapters('emojis'));
-
-        function allah(anan) {
+    async run(client, message, args) {        
+        function sayi(anan) {
             var reg = new RegExp("^\\d+$");
             var valid = reg.test(anan);
             return valid;
         }
 
-        if (!allah(args[0])) return message.react(data.emojis["error"].split(':')[2].replace('>', ''));
+        if (!sayi(args[0])) return await message.react("🚫");
 
 
         const amount = args[0];
 
-        if (!amount) return message.react(data.emojis["error"].split(':')[2].replace('>', ''));
-        if (isNaN(amount)) return message.react(data.emojis["error"].split(':')[2].replace('>', ''));
+        if (!amount) return await message.react("🚫");
+        if (isNaN(amount)) return await message.react("🚫");
 
-        if (amount > 100) return message.react(data.emojis["error"].split(':')[2].replace('>', ''));
-        if (amount < 1) return message.react(data.emojis["error"].split(':')[2].replace('>', ''));
+        if (amount > 100) return await message.react("🚫");
+        if (amount < 1) return await message.react("🚫");
 
         await message.channel.messages.fetch(
             { limit: amount }).then(messages => {
