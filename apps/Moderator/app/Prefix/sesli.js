@@ -3,7 +3,7 @@ class Ysay extends DotCommand {
 
     constructor(client) {
         super(client, {
-            name: "sesslli",
+            name: "sesli",
             description: "Seste olmayan etiketler",
             usage: "ysay @etiket/id",
             examples: ["ysay 674565119161794560"],
