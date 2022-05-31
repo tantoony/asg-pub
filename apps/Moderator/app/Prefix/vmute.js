@@ -59,7 +59,7 @@ class vMute extends DotCommand {
         client.emit('vmute', mentioned.user.id, message.author.id, sebep, args[1]);
         await message.react("👍");
         //this.client.cmdCooldown[message.author.id][this.info.name] = Date.now() + this.info.cooldown;
-        const logChannel = message.guild.channels.cache.get(data.channels["cmd-mod"]);
+        //const logChannel = message.guild.channels.cache.get(data.channels["cmd-mod"]);
         //const embed = new Discord.MessageEmbed().setColor('#2f3136').setDescription(`${mentioned} kullanıcısı ${message.member} tarafından susturuldu!`);
         //await logChannel.send(embed);
 
