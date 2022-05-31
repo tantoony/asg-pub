@@ -10,6 +10,7 @@ class Tantoony extends Client {
                 .log(p, t)
         };
         (() => {
+            require('moment').locale('tr');
             require('dotenv').config({ path: __dirname + '/.env' });
             this.login(process.env[this.config.vars[name]]);
             this.mongoLogin();

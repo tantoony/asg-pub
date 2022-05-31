@@ -1,6 +1,4 @@
 const Discord = require('discord.js');
-const moment = require("moment");
-moment.locale('tr');
 const { DotCommand } = require("../../../../base/utils");
 class vMute extends DotCommand {
 
