@@ -19,7 +19,20 @@ class vunMute extends DotCommand {
     async run(client, message, args) {
         let mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!mentioned) return await message.react("🚫");
-        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "VMUTE" }, { $set: {  until: moment(Date.now()).subtract("1m").toDate() } });
+        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "VMUTE" }, { $set: { until: moment(Date.now()).subtract("1m").toDate() } });
+        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "VMUTE" }, {
+            $push: {
+                extras: {
+                    subject: "revoke",
+                    data: {
+                        executor: message.author.id,
+                        date: new Date(),
+                        channel: message.channel.id,
+                        message: message.id
+                    }
+                }
+            }
+        });
         if (mentioned.voice && mentioned.voice.channel) await mentioned.voice.setMute(false);
         await message.react("👍");
         //  this.client.cmdCooldown[message.author.id][this.info.name] = Date.now() + this.info.cooldown;
