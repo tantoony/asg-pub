@@ -14,7 +14,7 @@ class Handler {
 	lauch() {
 		pm2.launchBus(function (err, bus) {
 			bus.on("process:msg", function (packet) {
-				console.log(packet);
+				this.client.emit("pm2", packet);
 			});
 		});
 		process.on('message', function () {

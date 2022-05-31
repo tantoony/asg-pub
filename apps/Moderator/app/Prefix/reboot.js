@@ -1,14 +1,13 @@
-const Command = require('../../../Base/Command');
-const low = require('lowdb');
-class Reboot extends Command {
+const { DotCommand } = require("../../../../base/utils");
+class Reboot extends DotCommand {
     constructor(client) {
         super(client, {
             name: "reboot",
-            description: "Açıklama Belirtilmemiş",
-            usage: "reboot",
-            examples: ["reboot"],
+            description: "Açıklama Belirtilmemiş.",
+            usage: "Kullanım Belirtilmemiş.",
+            examples: ["Örnek Bulunmamakta"],
             category: "OWNER",
-            aliases: ["crush", "rb"],
+            aliases: [],
             accaptedPerms: [],
             cooldown: 5000,
             enabled: true,
@@ -21,7 +20,8 @@ class Reboot extends Command {
     }
     async run(client, message, args, data) {
         await message.reply(`\`Hazırlanıyor...\``);
-        (await low(this.client.adapters('utils'))).set("lastCrush", message.channel.id).write();
+        await message.react("👍");
+        //(await low(this.client.adapters('utils'))).set("lastCrush", message.channel.id).write();
         process.exit();
     }
 }

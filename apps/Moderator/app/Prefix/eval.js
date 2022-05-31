@@ -9,7 +9,7 @@ class Eval extends DotCommand {
             examples: ["Örnek Bulunmamakta"],
             category: "OWNER",
             aliases: [],
-            accaptedPerms: ["root"],
+            accaptedPerms: [],
             cooldown: 5000,
             enabled: true,
             adminOnly: false,
