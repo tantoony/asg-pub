@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js');
-module.exports = class Kayitsil extends ApplicationCommand {
+const { AppUserCommand } = require('../../../../base/utils');
+
+class ClickDel extends AppUserCommand {
     constructor(client) {
         super(client, {
             name: "kayitsil",
@@ -27,3 +29,5 @@ module.exports = class Kayitsil extends ApplicationCommand {
 
     }
 }
+
+module.exports = ClickDel;
