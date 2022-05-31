@@ -256,12 +256,7 @@ class AppUserCommand extends ApplicationCommand {
 			cooldown,
 			enabled
 		};
-		this.label = label;
 		this.customId = customId;
-		this.style = style;
-		this.emoji = emoji;
-		this.url = url;
-		this.disabled = disabled;
 		this.perms = [];
 		this.cooldown = new Collection();
 	}
