@@ -254,8 +254,7 @@ class AppUserCommand extends ApplicationCommand {
 			dirname,
 			intChannel,
 			cooldown,
-			enabled,
-			isconst
+			enabled
 		};
 		this.label = label;
 		this.customId = customId;
