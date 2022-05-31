@@ -9,7 +9,7 @@ class VoiceStateUpdate extends ClientEvent {
     async run(prev, cur) {
         const client = this.client;
         const vmutes = await this.client.models.penalties.find({ typeOf: "VMUTE", userId: cur.member.user.id });
-        if (vmutes && vmutes.some(vmute => vmute.until.getTime > new Date().getTime()) && !cur.serverMute) {
+        if (vmutes.length > 0 && vmutes.some(vmute => vmute.until.getTime > new Date().getTime()) && !cur.serverMute) {
             await cur.setMute(true);
         }
         if (!vmute && cur.serverMute && prev.serverMute) {
