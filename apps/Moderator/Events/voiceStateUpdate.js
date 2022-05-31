@@ -10,7 +10,8 @@ class VoiceStateUpdate extends ClientEvent {
         const client = this.client;
         const vmutes = await this.client.models.penalties.find({ typeOf: "VMUTE", userId: cur.member.user.id });
         if (vmutes.length > 0 && vmutes.some(vmute => vmute.until.getTime() > new Date().getTime())) {
-            if(!cur.serverMute) await cur.setMute(true);
+            const mute = vmutes.find(vmute => vmute.until.getTime() > new Date().getTime())
+            if(!cur.serverMute && !mute.extras.some(extra => extra.subject === "revoke")) await cur.setMute(true);
         } else if (cur.serverMute && prev.serverMute) await cur.setMute(false);
         if (prev && cur && prev.selfMute && !cur.selfMute) {
             let uCooldown = this.client.actionlist.voicespam.get(cur.member.user.id);
