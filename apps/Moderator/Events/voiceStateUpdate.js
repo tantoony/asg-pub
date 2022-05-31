@@ -12,7 +12,7 @@ class VoiceStateUpdate extends ClientEvent {
         if (vmute && !cur.serverMute) {
             await cur.setMute(true);
         }
-        if (!vmute && cur.serverMute) {
+        if (!vmute && cur.serverMute && prev.serverMute) {
             await cur.setMute(false);
         }
         if (prev && cur && prev.selfMute && !cur.selfMute) {
