@@ -19,7 +19,19 @@ class cunMute extends DotCommand {
     async run(client, message, args) {
         let mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!mentioned) return await message.react("🚫");// message.react(data.emojis["error"].split(':')[2].replace('>', ''));
-        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "CMUTE" }, { $set: {  until: moment(Date.now()).subtract("1m").toDate() } });
+        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "VMUTE" }, {
+            $push: {
+                extras: {
+                    subject: "revoke",
+                    data: {
+                        executor: message.author.id,
+                        date: new Date(),
+                        channel: message.channel.id,
+                        message: message.id
+                    }
+                }
+            }
+        });
         await mentioned.roles.remove(client.data.roles["muted"]);
         await message.react("👍");
         /*
