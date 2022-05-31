@@ -1,7 +1,15 @@
 module.exports = {
   apps: [
     {
-      name: "guard_1",
+      name: "central",
+      script: 'index.js',
+      watch: false,
+      exec_mode: "cluster",
+      max_memory_restart: "2G",
+      cwd: "./apps/CENTRAL"
+    },
+    {
+      name: "gr1",
       script: 'index.js',
       watch: false,
       exec_mode: "cluster",
@@ -9,7 +17,7 @@ module.exports = {
       cwd: "./apps/Guard_1"
     },
     {
-      name: "guard_2",
+      name: "gr2",
       script: 'index.js',
       watch: false,
       exec_mode: "cluster",
@@ -17,13 +25,14 @@ module.exports = {
       cwd: "./apps/Guard_2"
     },
     {
-      name: "guard_3",
+      name: "gr3",
       script: 'index.js',
       watch: false,
       exec_mode: "cluster",
       max_memory_restart: "2G",
       cwd: "./apps/Guard_3"
     },
+    /*
     {
       name: "guard_4",
       script: 'index.js',
@@ -40,6 +49,7 @@ module.exports = {
       max_memory_restart: "2G",
       cwd: "./apps/Guard_5"
     },
+    */
     {
       name: "registry",
       script: 'index.js',
