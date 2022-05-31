@@ -1,12 +1,11 @@
-const { MessageEmbed, ApplicationCommand } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = class Kayitsil extends ApplicationCommand {
-    constructor(client, data) {
-        super(client, data = {
-            name: "kayıtsil",
+    constructor(client) {
+        super(client, {
+            name: "kayitsil",
             type: "USER",
-            default_permission: false
+            customId: "kayitsil",
         });
-        this.permissions = client.config.staff.slice(0);
     }
     async run(client, intg, data) {
         const target = intg.guild.members.cache.get(intg.targetId);

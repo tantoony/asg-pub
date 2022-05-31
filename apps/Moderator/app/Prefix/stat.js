@@ -1,14 +1,9 @@
-const Command = require('../../../Base/Command');
-const low = require('lowdb');
 const Discord = require('discord.js');
-const { checkDays, rain } = require('../../../../../HELPERS/functions');
-const StatData = require('../../../../../MODELS/StatUses/VoiceRecords');
 const { stripIndent } = require('common-tags');
-const stringTable = require('string-table');
 const moment = require("moment")
 moment.locale('tr');
-
-class Invites extends Command {
+const { DotCommand } = require("../../../../base/utils");
+class Stat extends DotCommand {
     constructor(client) {
         super(client, {
             name: "stat",
@@ -53,4 +48,4 @@ class Invites extends Command {
         return await message.reply(responseEmbed)
     }
 }
-module.exports = Invites;
+module.exports = Stat;
