@@ -16,7 +16,7 @@ class EmitRunMuteV extends ClientEvent {
             reason: reason,
             extras: [],
             typeOf: "VMUTE",
-            until: duration ? require('moment')(new Date()).add(`${duration}m`).toDate() : null,
+            until: duration ? require('moment')(new Date()).add(duration, "minutes").toDate() : null,
             created: new Date()
         });
         if (note) await this.client.models.penalties.updateOne({ _id: docum._id }, {
