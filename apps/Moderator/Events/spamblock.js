@@ -19,7 +19,7 @@ class LinkBlock extends ClientEvent {
         mcache.push(peer);
         this.cooldown.set(`${message.author.id}+${message.channel.id}`, mcache.filter(log => require('moment')(log.dte).add(1, "hour").toDate().getTime() > new Date().getTime()));
         const msglogs = this.cooldown.get(`${message.author.id}+${message.channel.id}`);
-        if (msglogs.filter(m => m.cnt === message.content).length > 3) {
+        if (msglogs.filter(m => m.cnt === message.content).length == 4) {
             client.emit("cmute", message.author.id, client.user.id, `${message.channel.name} kanalında spam.`, 10);
             message.channel.send(`<@${message.author.id}> \`[${message.author.id}]\` sus sürtük.`);
             this.cooldown.set(`${message.author.id}+${message.channel.id}`, []);
