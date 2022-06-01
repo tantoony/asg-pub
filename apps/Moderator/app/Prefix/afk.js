@@ -18,6 +18,8 @@ class Afk extends DotCommand {
         if (sebep.includes("@everyone")) return await message.react("🚫");
         if (sebep.includes("@here")) return await message.react("🚫");
         if (sebep.length > 50 || sebep.length == 0) return await message.react("🚫");
+        const member = await client.models.member.findOne({ _id: message.author.id, "afk_data.isAfk": true });
+        if (member) return await message.react("🚫");
         await client.models.member.updateOne({ _id: message.author.id }, {
             afk_data: {
                 isAfk: true,
