@@ -32,6 +32,7 @@ class LinkBlock extends ClientEvent {
         });
         let i = 0;
         while (msgLog[i].diff < 5000) {
+            console.log("sa")
             if (msgLog[i].isSame && msgLog.filter(c => c.cur.content === message.content).length > 3) {
                 client.emit("cmute", message.author.id, client.user.id, `${message.channel.name} kanalında spam.`, 10);
                 message.channel.send(`<@${message.author.id}> \`[${message.author.id}]\` sus sürtük.`);
