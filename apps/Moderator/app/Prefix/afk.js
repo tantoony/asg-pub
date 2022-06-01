@@ -20,13 +20,15 @@ class Afk extends DotCommand {
         if (sebep.length > 50 || sebep.length == 0) return await message.react("🚫");
         const system = await client.models.member.findOne({ _id: message.author.id, [afk_data.note]: { $ne: null } });
         if (!system) {
-                await client.models.member.updateOne({ _id: message.author.id,
-                    afk_data: {
+            await client.models.member.updateOne({ _id: message.author.id }, {
+                afk_data: {
+                    $set: {
                         note: sebep,
                         created: new Date(),
                         inbox: []
                     }
-                });
+                }
+            });
             await message.react("👍");
         } else return;
     }
