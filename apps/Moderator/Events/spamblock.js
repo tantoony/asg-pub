@@ -29,14 +29,15 @@ class LinkBlock extends ClientEvent {
                 diff: require('moment')(perce.old.dte).diff(perce.cur.diff)
             }
         });
-        let i = 1;
-        while (msgLog[msglogs.length - i] && msgLog[msglogs.length - i].diff < 5000) {
-            console.log("sa")
-            if (msgLog[i].isSame && msgLog.filter(c => c.cur.content === message.content).length > 3) {
+        for (let i = 0; i < msglogs.length - 1; i++) {
+            const log = msgLog[msglogs.length - i];
+            console.log(log)
+            if (log.isSame && msgLog.filter(c => c.cur.content === message.content).length > 3) {
                 client.emit("cmute", message.author.id, client.user.id, `${message.channel.name} kanalında spam.`, 10);
                 message.channel.send(`<@${message.author.id}> \`[${message.author.id}]\` sus sürtük.`);
             }
             i = i + 1;
+
         }
     }
 
