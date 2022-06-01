@@ -35,14 +35,12 @@ class MsgCrte extends ClientEvent {
                 });
                 await afks.forEach(async afk => {
                     await client.models.member.updateOne({ _id: afk._id }, {
-                        $push: {
-                            afk_data: {
-                                inbox: {
-                                    content: message.content,
-                                    author: message.author.id,
-                                    link: message.url,
-                                    created: new Date()
-                                }
+                        "afk_data.inbox": {
+                            $push: {
+                                content: message.content,
+                                author: message.author.id,
+                                link: message.url,
+                                created: new Date()
                             }
                         }
                     });
