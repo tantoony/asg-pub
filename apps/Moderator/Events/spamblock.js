@@ -21,9 +21,8 @@ class LinkBlock extends ClientEvent {
         };
         mcache.push(piece);
         this.cooldown.set(`${message.author.id}+${message.channel.id}`, mcache.filter(log => Date.now() - log.cur.dte.getTime() < 60000));
-        if (!piece.old) return;
         const msglogs = this.cooldown.get(`${message.author.id}+${message.channel.id}`);
-        const msgLog = msglogs.map(perce => {
+        const msgLog = msglogs.slice(1).map(perce => {
             return {
                 isSame: perce.old.cnt === perce.cur.cnt,
                 diff: require('moment')(perce.old.dte).diff(perce.cur.diff)
