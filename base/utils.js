@@ -412,11 +412,11 @@ const models = {
 		afk_data: {
 			note: String,
 			created: Date,
-			iskAfk: Boolean,
 			inbox: [{
 				content: String,
-				from: String,
-				created: Date
+				author: String,
+				created: Date,
+				link: String
 			}]
 		},
 		rewards: [{
