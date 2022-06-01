@@ -11,7 +11,7 @@ class LinkBlock extends ClientEvent {
         const client = this.client;
         if (message.guild && (message.guild.id !== client.config.server)) return;
         let mcache = this.cooldown.get(`${message.author.id}+${message.channel.id}`);
-        if (mcache) mcache = [];
+        if (!mcache) mcache = [];
         const peer = {
             cnt: message.content,
             dte: new Date()
