@@ -23,7 +23,7 @@ class MsgCrte extends ClientEvent {
             await message.reply({
                 embeds: [embed]
             });
-            await client.models.member.updateOne({ _id: message.author.id }, { afk_data: { $set: { inbox: [], note: "", isAfk: false } } });
+            await client.models.member.updateOne({ _id: message.author.id }, { $set: { afk_data: { inbox: [], note: "", isAfk: false } } });
         }
         if (message.mentions.members.first()) {
             const afksindata = await client.models.member.find({ "afk_data.isAfk": true });
