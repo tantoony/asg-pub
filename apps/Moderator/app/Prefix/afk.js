@@ -21,16 +21,16 @@ class Afk extends DotCommand {
         const system = await client.models.member.findOne({ _id: message.author.id, "afk_data.note": { $ne: null } });
         if (!system) {
             await client.models.member.updateOne({ _id: message.author.id }, {
-                afk_data: {
-                    $set: {
+                $set: {
+                    afk_data: {
                         note: sebep,
                         created: new Date(),
                         inbox: []
                     }
                 }
             });
-            await message.react("👍");
-        } else return;
+        }
+        await message.react("👍");
     }
 }
 
