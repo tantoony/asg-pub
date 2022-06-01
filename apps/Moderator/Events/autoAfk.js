@@ -13,6 +13,7 @@ class MsgCrte extends ClientEvent {
         const client = this.client;
         if (message.author.bot) return;
         const member = await client.models.member.findOne({ _id: message.author.id, "afk_data.isAfk": true });
+        await client.models.member.updateOne({ _id: message.author.id }, { $set: { afk_data: { inbox: [], isAfk: false } } })
         if (member) {
             if (member.afk_data.inbox.length == 0) return await message.reply(`Seni tekrardan görmek ne güzel!`);
             const embed = new MessageEmbed.setDescription(stripIndents`
@@ -22,8 +23,7 @@ class MsgCrte extends ClientEvent {
             `);
             await message.reply({
                 embeds: [embed]
-            });
-            await client.models.member.updateOne({ _id: message.author.id }, { $set: { afk_data: { inbox: [], note: "", isAfk: false } } });
+            });;
         }
         if (message.mentions.members.first()) {
             const afksindata = await client.models.member.find({ "afk_data.isAfk": true });
