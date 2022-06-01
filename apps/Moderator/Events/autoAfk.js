@@ -16,7 +16,7 @@ class MsgCrte extends ClientEvent {
         await client.models.member.updateOne({ _id: message.author.id }, { $set: { afk_data: { inbox: [], isAfk: false } } })
         if (member) {
             if (member.afk_data.inbox.length == 0) return await message.reply(`Seni tekrardan görmek ne güzel!`);
-            const embed = new MessageEmbed.setDescription(stripIndents`
+            const embed = new MessageEmbed().setDescription(stripIndents`
             ${member.afk_data.inbox.length} yeni mesajın var!
             ●▬▬▬▬▬▬▬▬▬●
             ${member.afk_data.inbox.map(unread => `[⇱ ](${unread.link}) <@${unread.author}> <t:${Math.round(unread.created.getTime() / 1000)}:R> ${unread.content}`).join('\n')}
