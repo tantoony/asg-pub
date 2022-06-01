@@ -17,7 +17,7 @@ class LinkBlock extends ClientEvent {
             dte: new Date()
         };
         const piece = {
-            old: mcache.length = 0 ? null : mcache.pop().cur,
+            old: mcache.length == 0 ? null : mcache.pop().cur,
             cur: peer
         };
         mcache.push(piece);
