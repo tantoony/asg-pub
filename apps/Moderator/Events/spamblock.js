@@ -30,7 +30,7 @@ class LinkBlock extends ClientEvent {
             }
         });
         let i = 1;
-        while (msgLog[msglogs.length - i].diff < 5000) {
+        while (msgLog[msglogs.length - i] && msgLog[msglogs.length - i].diff < 5000) {
             console.log("sa")
             if (msgLog[i].isSame && msgLog.filter(c => c.cur.content === message.content).length > 3) {
                 client.emit("cmute", message.author.id, client.user.id, `${message.channel.name} kanalında spam.`, 10);
