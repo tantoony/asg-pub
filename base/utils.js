@@ -412,6 +412,7 @@ const models = {
 		afk_data: {
 			note: String,
 			created: Date,
+			isAfk: Boolean,
 			inbox: [{
 				content: String,
 				author: String,

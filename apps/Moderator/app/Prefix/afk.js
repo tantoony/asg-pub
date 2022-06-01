@@ -20,6 +20,7 @@ class Afk extends DotCommand {
         if (sebep.length > 50 || sebep.length == 0) return await message.react("🚫");
         await client.models.member.updateOne({ _id: message.author.id }, {
             afk_data: {
+                isAfk: true,
                 note: sebep,
                 created: new Date(),
                 inbox: []
