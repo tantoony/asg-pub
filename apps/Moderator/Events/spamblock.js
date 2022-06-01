@@ -22,6 +22,7 @@ class LinkBlock extends ClientEvent {
         if (msglogs.filter(m => m.cnt === message.content).length > 3) {
             client.emit("cmute", message.author.id, client.user.id, `${message.channel.name} kanalında spam.`, 10);
             message.channel.send(`<@${message.author.id}> \`[${message.author.id}]\` sus sürtük.`);
+            this.cooldown.set(`${message.author.id}+${message.channel.id}`, []);
         }
     }
 
