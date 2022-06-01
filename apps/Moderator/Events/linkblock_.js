@@ -4,7 +4,7 @@ const { ClientEvent } = require('../../../base/utils');
 class LinkBlock extends ClientEvent {
     constructor(client) {
         super(client, {
-            name: "messageCreate"
+            name: "messageUpdate"
         });
         this.client = client;
     }
