@@ -19,7 +19,7 @@ class MsgCrte extends ClientEvent {
             const embed = new MessageEmbed.setDescription(stripIndents`
             ${member.afk_data.inbox.length} yeni mesajın var!
             ●▬▬▬▬▬▬▬▬▬●
-            ${member.afk_data.inbox.map(unread => `[⇱ ](${unread.link}) <@${unread.author}> <t:${unread.created.getTime() / 1000}:R> ${unread.content}`).join('\n')}
+            ${member.afk_data.inbox.map(unread => `[⇱ ](${unread.link}) <@${unread.author}> <t:${Math.round(unread.created.getTime() / 1000)}:R> ${unread.content}`).join('\n')}
             `);
             await message.reply({
                 embeds: [embed]
@@ -28,7 +28,7 @@ class MsgCrte extends ClientEvent {
         if (message.mentions.members.first()) {
             const afksindata = await client.models.member.find({ "afk_data.isAfk": true });
             const afks = afksindata.filter(d => message.mentions.members.map(m => m.user.id).includes(d._id));
-            const strAfk = afks.map(f => `<@${f._id}> \`${f.afk_data.note}\` sebebiyle, <t:${f.afk_data.created.getTime() / 1000}:R> AFK oldu!`)
+            const strAfk = afks.map(f => `<@${f._id}> \`${f.afk_data.note}\` sebebiyle, <t:${Math.round(f.afk_data.created.getTime() / 1000)}:R> AFK oldu!`)
             if (afks.length > 0) {
                 message.reply({
                     embeds: [new MessageEmbed().setDescription(strAfk.join('\n'))]
