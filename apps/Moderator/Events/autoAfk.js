@@ -28,7 +28,7 @@ class MsgCrte extends ClientEvent {
         if (message.mentions.members.first()) {
             const afksindata = await client.models.member.find({ "afk_data.isAfk": true });
             const afks = afksindata.filter(d => message.mentions.members.map(m => m.user.id).includes(d._id));
-            const strAfk = afks.map(afk => `<@${afk._id}> \`${afk.note}\` sebebiyle, <t:${afk.created.getTime() / 1000}:R> AFK oldu!`)
+            const strAfk = afks.map(afk => `<@${f._id}> \`${f.afk_data.note}\` sebebiyle, <t:${f.afk_data.created.getTime() / 1000}:R> AFK oldu!`)
             if (afks.length > 0) {
                 message.reply({
                     embeds: [new MessageEmbed().setDescription(strAfk.join('\n'))]
