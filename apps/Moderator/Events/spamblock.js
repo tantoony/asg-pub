@@ -21,7 +21,7 @@ class LinkBlock extends ClientEvent {
             cur: peer
         };
         mcache.push(piece);
-        this.cooldown.set(`${message.author.id}+${message.channel.id}`, mcache.filter(log => Date.now() - log.cur.dte > 60000));
+        this.cooldown.set(`${message.author.id}+${message.channel.id}`, mcache.filter(log => Date.now() - log.cur.dte.getTime() > 60000));
         if (!piece.old) return;
         const msglogs = this.cooldown.get(`${message.author.id}+${message.channel.id}`);
         const msgLog = msglogs.map(perce => {
