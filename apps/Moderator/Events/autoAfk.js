@@ -12,7 +12,7 @@ class MsgCrte extends ClientEvent {
     async run(message) {
         const client = this.client;
         if (message.author.bot) return;
-        const member = await client.models.member.findOne({ _id: message.author.id, "afk_data.note": { $ne: null } });
+        const member = await client.models.member.findOne({ _id: message.author.id, "afk_data.note": { $ne: "" } });
         if (member) {
             if (member.afk_data.inbox.length == 0) return await message.reply(`Seni tekrardan görmek ne güzel!`);
             const embed = new MessageEmbed.setDescription(stripIndents`
@@ -26,7 +26,7 @@ class MsgCrte extends ClientEvent {
             await client.models.member.updateOne({ _id: message.author.id }, { afk_data: { $set: { inbox: [], note: null } } });
         }
         if (message.mentions.members.first()) {
-            const afksindata = await client.models.member.find({ "afk_data.note": { $ne: null } });
+            const afksindata = await client.models.member.find({ "afk_data.note": { $ne: "" } });
             const afks = afksindata.filter(d => message.mentions.members.map(m => m.user.id).includes(d._id));
             const strAfk = afks.map(afk => `<@${afk._id}> \`${afk.note}\` sebebiyle, <t:${afk.created.getTime() / 1000}:R> AFK oldu!`)
             if (afks.length > 0) {
