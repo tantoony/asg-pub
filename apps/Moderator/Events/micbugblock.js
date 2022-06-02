@@ -15,8 +15,8 @@ class MicBug extends ClientEvent {
             channel: cur.channel.id,
             date: new Date()
         })
-        this.client.cooldown.set(cur.member.user.id, uCooldown);
-        uCooldown = this.client.cooldown.get(cur.member.user.id);
+        this.cooldown.set(cur.member.user.id, uCooldown);
+        uCooldown = this.cooldown.get(cur.member.user.id);
         let uCount = uCooldown.filter(d => d.channel === cur.channel.id && new Date().getTime() - d.date.getTime() < 1000);
         if (!uCooldown) this.cooldown.set(cur.member.user.id, uCount);
         const count = uCount.length;
