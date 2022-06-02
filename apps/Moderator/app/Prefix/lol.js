@@ -1,3 +1,4 @@
+const { stripIndent } = require("common-tags");
 const { PrefixCommand } = require("../../../../base/utils");
 class Eval extends PrefixCommand {
 
@@ -23,6 +24,12 @@ class Eval extends PrefixCommand {
     async run(client, message, args) {
         await message.channel.send({
             content: "**146 Danışma Paneli**",
+            embeds: [
+                new (require('discord.js')).MessageEmbed().setDescription(stripIndent`
+                Lütfen oluşturmak istediğiniz talebi seçiniz.
+                Konudan sorumlu müsait bir yetkilimiz çok geçmeden sizinle ilgilenecektir. 
+                `)
+            ],
             components: [
                 {
                     type: "ACTION_ROW",
