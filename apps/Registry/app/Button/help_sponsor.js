@@ -4,7 +4,7 @@ const { ButtonCommand } = require("../../../../base/utils");
 class RolCekilis extends ButtonCommand {
     constructor(client) {
         super(client, {
-            name: "rol_cekilis",
+            name: "help_b.sponsorz",
             cooldown: 10000
         });
         this.client = client;

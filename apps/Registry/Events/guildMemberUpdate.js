@@ -12,15 +12,6 @@ class GuildMemberUpdate extends ClientEvent {
 	async run(prev, cur) {
 		const client = this.client;
 		if (cur.guild.id !== client.config.server) return;
-		const memberDb = await client.models.member.findOne({ id: cur.user.id });
-		if (prev && prev.roles.cache.has(this.data.roles["booster"]) && !cur.roles.cache.has(this.data.roles["booster"])) {
-			const pointed = client.config.tags[0].some(t => target.user.username.includes(t)) ? client.config.tag[0] : client.config.extag;
-			await cur.setNickname(`${pointed} ${memberDb.name} | ${memberDb.age}`);
-			if (!memberDb) {
-				await cur.roles.remove(cur.roles.cache.array());
-				await cur.roles.add(this.data.roles["welcome"]);
-			}
-		}
 		const entry = await cur.guild.fetchAuditLogs({ type: "MEMBER_ROLE_UPDATE" }).then(logs => logs.entries.first());
 		if (entry.createdTimestamp <= Date.now() - 5000) return;
 		let ohal = false;
