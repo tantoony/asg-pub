@@ -1,4 +1,5 @@
 const { stripIndent } = require("common-tags");
+const { MessageAttachment } = require("discord.js");
 const { PrefixCommand } = require("../../../../base/utils");
 class Eval extends PrefixCommand {
 
@@ -27,10 +28,14 @@ class Eval extends PrefixCommand {
                 new (require('discord.js')).MessageEmbed().setDescription(stripIndent`
                 Lütfen oluşturmak istediğiniz talebi seçiniz.
                 Konudan sorumlu müsait bir yetkilimiz çok geçmeden sizinle ilgilenecektir. 
-                `).setImage(`${client.base}/media/asgWpp.jpg`).setAuthor({
-                    iconURL: client.base + '/media/sym.png',
+                `).setImage("attachment://img").setAuthor({
+                    iconURL: "attachment://icn",
                     name: "**146 Danışma Paneli**"
                 })
+            ],
+            files: [
+                new MessageAttachment(client.base + "/media/asgWpp.jpg", "img"),
+                new MessageAttachment(client.base + "/media/sym.png", "icn"),
             ],
             components: [
                 {
