@@ -24,8 +24,8 @@ class Eval extends PrefixCommand {
 
     async run(client, message, args) {
         const files = [
-            new MessageAttachment(client.base + "/media/asgWpp.jpg", "img"),
-            new MessageAttachment(client.base + "/media/sym.png", "icn"),
+            new MessageAttachment(client.base + "/media/asgWpp.jpg"),
+            new MessageAttachment(client.base + "/media/sym.png"),
         ]
         await message.channel.send({
             files,
@@ -33,8 +33,8 @@ class Eval extends PrefixCommand {
                 new (require('discord.js')).MessageEmbed().setDescription(stripIndent`
                 Lütfen oluşturmak istediğiniz talebi seçiniz.
                 Konudan sorumlu müsait bir yetkilimiz çok geçmeden sizinle ilgilenecektir. 
-                `).setImage("attachment://img").setAuthor({
-                    iconURL: "attachment://icn",
+                `).setImage("attachment://asgWpp.jpg").setAuthor({
+                    iconURL: "attachment://sym.png",
                     name: "146 Danışma Paneli"
                 })
             ],
