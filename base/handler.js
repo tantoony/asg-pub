@@ -41,6 +41,7 @@ class Handler {
 	}
 	
 	hello(client) {
+		if (!client) client = this.client;
 		this.client = client;
 		client.emit("_ready");
 		readdir(__dirname.replace('base', 'apps') + `/${this.client.name}/app/`)
