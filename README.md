@@ -1,5 +1,5 @@
-# Discord Topluluğunuz için harika botlar kurun
-## Önemli notlar:
+# Tantoony ve Padawanları F
+### Önemli notlar:
 * altyapı ubuntu vdslerde çalışmak için tasarlandı.
 * altyapıyı çalıştırmal için pm2'yi global olarak kurmalısınız.
 ```bash
@@ -9,8 +9,8 @@ npm install pm2 -g
 ```bash
 node -v
 ```
-## Katkıda Bulun
+### Katkıda Bulun
 Eğer projede geliştirilecek yerler, eksiklikler veya hatalar görüyor ve katkı sağlamak istiyorsanız [buraya tıklayarak](https://github.com/Tantoony/asg-pub/wiki/Rehber:-Katk%C4%B1da-Bulun) rehberimizi inceleyebilirsiniz.
 
-## Lisans
-[MIT](https://choosealicense.com/licenses/mit/)
+
+[MIT](https://choosealicense.com/licenses/mit/) lisansına sahiptir.
