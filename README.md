@@ -6,7 +6,5 @@ Projeye katkıda bulunmak istiyorsanız [buraya](https://github.com/Tantoony/asg
 * altyapı ubuntu vdslerde çalışmak için tasarlandı.
 * nodejs sürümü 16 veya daha yüksek olmalı.
 
-***
-
 [MIT](https://choosealicense.com/licenses/mit/) lisansına sahiptir.
 
