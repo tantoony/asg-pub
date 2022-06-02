@@ -4,7 +4,8 @@ const { ClientEvent } = require("../../../base/utils");
 class GuildMemberUpdate extends ClientEvent {
 	constructor(client) {
 		super(client, {
-			name: "guildMemberUpdate"
+			name: "guildMemberUpdate",
+            action: "MEMBER_ROLE_UPDATE"
 		});
 		this.client = client;
 	}
@@ -12,9 +13,8 @@ class GuildMemberUpdate extends ClientEvent {
 	async run(prev, cur) {
 		const client = this.client;
 		if (cur.guild.id !== client.config.server) return;
-		const entry = await cur.guild.fetchAuditLogs({ type: "MEMBER_ROLE_UPDATE" }).then(logs => logs.entries.first());
 		if (entry.createdTimestamp <= Date.now() - 5000) return;
-		const exeMember = cur.guild.members.cache.get(entry.executor.id);
+		const exeMember = cur.guild.members.cache.get(this.audit.executor.id);
 		let ohal = false;
 		pm2.list((err, list) => {
 			if (err) return;
@@ -50,42 +50,6 @@ class GuildMemberUpdate extends ClientEvent {
 				client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Mute Açma", "Perma", 1);
 			}
         }
-		const pJail = await client.models.penalties.findOne({ userId: cur.user.id, typeOf: "JAIL", until: { $gt: new Date() } });
-		if (pJail && !entry.executor.bot) {
-			await cur.roles.remove(cur.roles.cache.filter(r => r.id !== this.data.roles["booster"])
-				.filter(r => r.editable).map(r => r.id));
-			await cur.roles.add(this.data.roles["prisoner"]);
-			if (exeMember.roles.cache.has(this.data.roles["root"])) return;
-			client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Jail Açma", "Perma", 1);
-		}
-		const role = cur.guild.roles.cache.get(entry.changes[0].new[0].id);
-		const perms = [
-			"ADMINISTRATOR",
-			"KICK_MEMBERS",
-			"BAN_MEMBERS",
-			"MANAGE_CHANNELS",
-			"MANAGE_GUILD",
-			"VIEW_AUDIT_LOG",
-			"MANAGE_MESSAGES",
-			"MENTION_EVERYONE",
-			"MUTE_MEMBERS",
-			"DEAFEN_MEMBERS",
-			"MOVE_MEMBERS",
-			"MANAGE_NICKNAMES",
-			"MANAGE_ROLES",
-			"MANAGE_WEBHOOKS"
-		];
-		let primity = await this.client.models.member.findOne({ _id: entry.executor.id });
-		primity = primity.authorized.filter((prm) => prm.auditType === "MEMBER_ROLE_UPDATE").find((prm) => prm.until.getTime > new Date().getTime() || !prm.until);
-		if (primity.length === 0 && perms.some(perm => role.permissions.has(perm)) && !entry.executor.bot) {
-			const key = entry.changes[0].key;
-			if (key === '$add') await cur.roles.remove(role);
-			if (key === '$remove') await cur.roles.add(role);
-			const exeMember = cur.guild.members.cache.get(entry.executor.id);
-			client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Rol Verme", "Perma", 1);
-		} else if (primity.until) {
-			await this.client.models.member.updateOne({ _id: entry.executor.id }, { $pull: { authorized: primity } });
-		}
 
 	}
 }
