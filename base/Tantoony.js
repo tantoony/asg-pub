@@ -4,6 +4,7 @@ class Tantoony extends Client {
         super(options);
         this.name = name;
         this.config = require('./config');
+        this.base = __dirname.toString();
         this.log = (p, t) => {
             return require("./utils")
                 .functions

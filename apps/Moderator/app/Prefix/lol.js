@@ -28,7 +28,9 @@ class Eval extends PrefixCommand {
                 new (require('discord.js')).MessageEmbed().setDescription(stripIndent`
                 Lütfen oluşturmak istediğiniz talebi seçiniz.
                 Konudan sorumlu müsait bir yetkilimiz çok geçmeden sizinle ilgilenecektir. 
-                `)
+                `).setImage(`${client.base}/media/asgWpp.jpg`).setAuthor({
+                    iconURL: client.base + '/media/sym.png'
+                })
             ],
             components: [
                 {
