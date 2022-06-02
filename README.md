@@ -10,7 +10,7 @@ npm install pm2 -g
 node -v
 ```
 ## Katkıda Bulun
-Eğer projede geliştirilecek yerler, eksiklikler veya hatalar görüyor ve katkı sağlamak istiyorsanız [rehberimizi](https://github.com/Tantoony/asg-pub/wiki/Rehber:-Katk%C4%B1da-Bulun) inceleyebilirsiniz.
+Eğer projede geliştirilecek yerler, eksiklikler veya hatalar görüyor ve katkı sağlamak istiyorsanız [buraya tıklayarak](https://github.com/Tantoony/asg-pub/wiki/Rehber:-Katk%C4%B1da-Bulun) rehberimizi inceleyebilirsiniz.
 
 ## Lisans
 [MIT](https://choosealicense.com/licenses/mit/)
