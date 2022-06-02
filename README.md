@@ -9,10 +9,8 @@ npm install pm2 -g
 ```bash
 node -v
 ```
-## Geliştirme
-Eğer projede geliştirilecek yerler görüyor ve katkı sağlamak istiyorsanız lütfen fork'layıp pull request atın. Gerçekten çok mutlu olurum.
-İletişim: Tantoony#0146
-
+## Katkıda Bulun
+Eğer projede geliştirilecek yerler, eksiklikler veya hatalar görüyor ve katkı sağlamak istiyorsanız [rehberimizi](https://github.com/Tantoony/asg-pub/wiki/Rehber:-Katk%C4%B1da-Bulun) inceleyebilirsiniz.
 
 ## Lisans
 [MIT](https://choosealicense.com/licenses/mit/)
