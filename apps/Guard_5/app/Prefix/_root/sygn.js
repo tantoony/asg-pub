@@ -4,9 +4,8 @@ const Discord = require('discord.js');
 const { stripIndents } = require("common-tags");
 const chp = require("child_process");
 const VoiceChannels = require("../../../../../MODELS/Datalake/VoiceChannels");
-const { Types } = require("../../../../base/utils");
 const ButtonCommand = require("../../../../../base/types/button");
-class EvalSync extends Types.PrefixCommand {
+class EvalSync extends PrefixCommand {
 
     constructor(client) {
         super(client, {

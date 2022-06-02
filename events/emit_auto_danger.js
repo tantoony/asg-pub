@@ -9,8 +9,8 @@ class Ready extends ClientEvent {
 
     async run(perms) {
         await this.client.guild.roles.cache.filter(role => role.permissions.cache.some(perm => perms.has(perm))).forEach(async (role) => {
-            await role.setPermissions()
-        })
+            await role.setPermissions();
+        });
 
     }
 }

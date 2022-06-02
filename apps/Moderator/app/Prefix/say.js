@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
-const { DotCommand } = require("../../../../base/utils");
+const { PrefixCommand } = require("../../../../base/utils");
 const { stripIndent } = require('common-tags');
-class Say extends DotCommand {
+class Say extends PrefixCommand {
 
     constructor(client) {
         super(client, {

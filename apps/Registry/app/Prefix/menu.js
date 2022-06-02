@@ -1,7 +1,7 @@
-const { DotCommand } = require("../../../../base/utils");
+const { PrefixCommand } = require("../../../../base/utils");
 const Discord = require('discord.js');
 const { stripIndents } = require("common-tags");
-class Eval extends DotCommand {
+class Eval extends PrefixCommand {
 
     constructor(client) {
         super(client, {

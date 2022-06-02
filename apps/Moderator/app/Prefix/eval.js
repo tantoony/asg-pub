@@ -1,5 +1,5 @@
-const { DotCommand } = require("../../../../base/utils");
-class Eval extends DotCommand {
+const { PrefixCommand } = require("../../../../base/utils");
+class Eval extends PrefixCommand {
 
     constructor(client) {
         super(client, {

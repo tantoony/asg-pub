@@ -33,7 +33,7 @@ class ClientEvent {
 			this.client.guild.fetchAuditLogs({ type: this.action }).then((logs) => {
 				this.audit = logs.entries.first();
 				if (this.audit.executor.id !== this.client.user.id) this.client.models.member.findOne({ _id: this.audit.executor.id }).then((doc) => {
-					const primity = doc.authorized.filter((prm) => prm.auditType === this.action).find((prm) => prm.until.getTime > new Date().getTime() || !prm.until);
+					const primity = doc.authorized.filter((prm) => prm.auditType === this.action).find((prm) => !prm.until || prm.until.getTime() > new Date().getTime());
 					if (primity.length > 0) {
 						this.isAuthed = true;
 						this.pass(primity, ...args);
@@ -62,7 +62,7 @@ class ClientEvent {
 	axis(...params) {
 		if (this.audit.createdTimestamp <= Date.now() - 5000) return;
 		if (this.audit.executor.id === this.client.user.id) return;
-		if (this.privity) this.client.emit('Danger', ["ADMINISTRATOR", "BAN_MEMBERS", "MANAGE_CHANNELS", "KICK_MEMBERS", "MANAGE_GUILD", "MANAGE_WEBHOOKS", "MANAGE_ROLES"]);
+		if (this.privity) this.client.emit('danger', ["ADMINISTRATOR", "BAN_MEMBERS", "MANAGE_CHANNELS", "KICK_MEMBERS", "MANAGE_GUILD", "MANAGE_WEBHOOKS", "MANAGE_ROLES"]);
 		this.client.emit(this.punish, this.audit.executor.id, this.client.user.id, this.action, "p", `auditId: ${this.audit.id}`);
 		try {
 			this.refix(...params);
@@ -343,7 +343,7 @@ class AppMessageCommand extends ApplicationCommand {
 	}
 }
 
-class DotCommand {
+class PrefixCommand {
 	constructor(client, {
 		name = null,
 		description = "Açıklama Belirtilmemiş",
@@ -390,19 +390,6 @@ class DotCommand {
 		this.client.log(`Prefix komutu yükleniyor: ${this.info.name} 👌`, "load");
 		this.client.responders.set(`dot:${this.info.name}`, this);
 	}
-}
-
-
-function dateTimePad(value, digits) {
-	let number = value;
-	while (number.toString().length < digits) {
-		number = "0" + number;
-	}
-	return number;
-}
-
-function format(tDate) {
-	return (tDate.getFullYear() + "-" + dateTimePad((tDate.getMonth() + 1), 2) + "-" + dateTimePad(tDate.getDate(), 2) + " " + dateTimePad(tDate.getHours(), 2) + ":" + dateTimePad(tDate.getMinutes(), 2) + ":" + dateTimePad(tDate.getSeconds(), 2) + "." + dateTimePad(tDate.getMilliseconds(), 3));
 }
 
 const models = {
@@ -560,6 +547,18 @@ const models = {
 	}))
 };
 
+function dateTimePad(value, digits) {
+	let number = value;
+	while (number.toString().length < digits) {
+		number = "0" + number;
+	}
+	return number;
+}
+
+function format(tDate) {
+	return (tDate.getFullYear() + "-" + dateTimePad((tDate.getMonth() + 1), 2) + "-" + dateTimePad(tDate.getDate(), 2) + " " + dateTimePad(tDate.getHours(), 2) + ":" + dateTimePad(tDate.getMinutes(), 2) + ":" + dateTimePad(tDate.getSeconds(), 2) + "." + dateTimePad(tDate.getMilliseconds(), 3));
+}
+
 const functions = {
 	comparedate(date) {
 		let now = new Date();
@@ -651,7 +650,7 @@ const functions = {
 
 module.exports = {
 	ButtonCommand,
-	DotCommand,
+	PrefixCommand,
 	SlashCommand,
 	MenuCommand,
 	AppUserCommand,

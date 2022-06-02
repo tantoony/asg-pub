@@ -1,6 +1,6 @@
 const children = require("child_process");
-const { DotCommand } = require("../../../../base/utils");
-class Kur extends DotCommand {
+const { PrefixCommand } = require("../../../../base/utils");
+class Kur extends PrefixCommand {
 
     constructor(client) {
         super(client, {

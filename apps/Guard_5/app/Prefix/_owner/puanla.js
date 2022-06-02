@@ -37,7 +37,7 @@ class pm2 extends Command {
             .filter(r => r.hoist).filter(r => r.name.startsWith('†'))
             .filter(r => r.id !== data.roles["booster"])
             .sort((a, b) => a.rawPosition - b.rawPosition).array().reverse();
-        console.log(hoistroller.map(r => r.name))
+        //console.log(hoistroller.map(r => r.name))
 
         for (let index = 0; index < hoistroller.length; index++) {
             const role = hoistroller[index];

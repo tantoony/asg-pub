@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const { DotCommand } = require("../../../../base/utils");
-class Yardım extends DotCommand {
+const { PrefixCommand } = require("../../../../base/utils");
+class Yardım extends PrefixCommand {
     constructor(client) {
         super(client, {
             name: "yardım",

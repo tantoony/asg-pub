@@ -1,5 +1,5 @@
-const { DotCommand } = require("../../../../base/utils");
-class Ysay extends DotCommand {
+const { PrefixCommand } = require("../../../../base/utils");
+class Ysay extends PrefixCommand {
 
     constructor(client) {
         super(client, {

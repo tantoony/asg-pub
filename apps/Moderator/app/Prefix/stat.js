@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
 moment.locale('tr');
-const { DotCommand } = require("../../../../base/utils");
-class Stat extends DotCommand {
+const { PrefixCommand } = require("../../../../base/utils");
+class Stat extends PrefixCommand {
     constructor(client) {
         super(client, {
             name: "stat",

@@ -2,8 +2,8 @@ const Discord = require('discord.js');
 const { stripIndents } = require('common-tags');
 const moment = require("moment");
 moment.locale('tr');
-const { DotCommand } = require("../../../../base/utils");
-class vunMute extends DotCommand {
+const { PrefixCommand } = require("../../../../base/utils");
+class vunMute extends PrefixCommand {
     constructor(client) {
         super(client, {
             name: "vunmute",

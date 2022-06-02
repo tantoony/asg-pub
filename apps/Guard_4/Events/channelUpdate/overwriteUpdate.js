@@ -46,7 +46,6 @@ class OverwriteUpdate extends ClientEvent {
                 deny: new Discord.Permissions(data.deny.bitfield).toArray()
             });
         });
-        console.log(options);
         const exeMember = curChannel.guild.members.cache.get(entry.executor.id);
         client.handler.emit('Jail', exeMember, client.user.id, "* İzin Yenileme", "Perma", 0);
         client.handler.emit('Logger', 'KDE', entry.executor.id, "CHANNEL_OVERWRITE_UPDATE", `${entry.executor.username} ${oldChannel.name} isimli kanalın izinleriyle oynadı`);

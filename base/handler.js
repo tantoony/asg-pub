@@ -63,7 +63,6 @@ class Handler {
 			client.log(reason, "error");
 		});
 		if (client) this.client = client;
-		//client.channels.cache.get(data.other["lastCrush"]).send("**TEKRAR ONLINE!**");
 		return this.client;
 	}
 	

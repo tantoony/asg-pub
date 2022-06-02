@@ -1,7 +1,7 @@
 const { ClientEvent } = require('../base/utils');
 const { MessageEmbed } = require('discord.js');
 
-class DotCommandCreate extends ClientEvent {
+class PrefixCommandCreate extends ClientEvent {
     constructor(client) {
         super(client, {
             name: "messageCreate"
@@ -78,4 +78,4 @@ class DotCommandCreate extends ClientEvent {
     }
 }
 
-module.exports = DotCommandCreate;
+module.exports = PrefixCommandCreate;

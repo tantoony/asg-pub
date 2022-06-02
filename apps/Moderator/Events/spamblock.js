@@ -10,6 +10,7 @@ class LinkBlock extends ClientEvent {
     async run(message) {
         const client = this.client;
         if (message.guild && (message.guild.id !== client.config.server)) return;
+        if (message.channel.name.startsWith("owo")) return;
         let mcache = this.cooldown.get(`${message.author.id}+${message.channel.id}`);
         if (!mcache) mcache = [];
         const peer = {
