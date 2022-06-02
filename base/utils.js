@@ -388,7 +388,7 @@ class PrefixCommand {
 
 	load() {
 		this.client.log(`Prefix komutu yükleniyor: ${this.info.name} 👌`, "load");
-		this.client.responders.set(`dot:${this.info.name}`, this);
+		this.client.responders.set(`prefix:${this.info.name}`, this);
 	}
 }
 

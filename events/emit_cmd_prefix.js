@@ -17,8 +17,8 @@ class PrefixCommandCreate extends ClientEvent {
         let cmd;
         let args = message.content.split(' ')
             .slice(1);
-        if (client.responders.has(`dot:${command}`)) {
-            cmd = client.responders.get(`dot:${command}`);
+        if (client.responders.has(`prefix:${command}`)) {
+            cmd = client.responders.get(`prefix:${command}`);
         } else return;
         const embed = new MessageEmbed();
         const data = client.data;
