@@ -23,13 +23,13 @@ class Eval extends PrefixCommand {
 
     async run(client, message, args) {
         await message.channel.send({
-            content: "**146 Danışma Paneli**",
             embeds: [
                 new (require('discord.js')).MessageEmbed().setDescription(stripIndent`
                 Lütfen oluşturmak istediğiniz talebi seçiniz.
                 Konudan sorumlu müsait bir yetkilimiz çok geçmeden sizinle ilgilenecektir. 
                 `).setImage(`${client.base}/media/asgWpp.jpg`).setAuthor({
-                    iconURL: client.base + '/media/sym.png'
+                    iconURL: client.base + '/media/sym.png',
+                    name: "**146 Danışma Paneli**"
                 })
             ],
             components: [
