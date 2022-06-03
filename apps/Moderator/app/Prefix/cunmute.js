@@ -19,7 +19,7 @@ class cunMute extends PrefixCommand {
     async run(client, message, args) {
         let mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
         if (!mentioned) return await message.react("🚫");// message.react(data.emojis["error"].split(':')[2].replace('>', ''));
-        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "VMUTE" }, {
+        await client.models.penalties.updateOne({ userId: mentioned.user.id, typeOf: "CMUTE" }, {
             $push: {
                 extras: {
                     subject: "revoke",
