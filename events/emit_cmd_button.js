@@ -11,7 +11,7 @@ class ButtonCommandCreate extends ClientEvent {
         const client = this.client;
         let cmd;
         if (interaction.isContextMenu()) return;
-        if (client.responders.has(`button:${interaction.customId.split(':')}`)[0]) {
+        if (client.responders.has(`button:${interaction.customId.split(':')[0]}`)) {
             cmd = client.responders.get(`button:${interaction.customId.split(':')[0]}`);
         } else return;
         if (!cmd.props.enabled) return await interaction.reply(`Bu komut şuan için **devredışı**`, {
