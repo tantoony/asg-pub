@@ -13,7 +13,7 @@ class RolCekilis extends ButtonCommand {
 
     async run(client, interaction, data) {
         const Data = await client.models.member.findOne({ _id: interaction.user.id });
-        const claim = Data.names.filter(peer => client.config.tags.some(tag => peer.name.includes(tag)) || client.config.dis === peer.discriminator).pop();
+        const claim = Data.names.filter(peer => peer.name && client.config.tags.some(tag => peer.name.includes(tag)) || client.config.dis === peer.discriminator).pop();
         const resp = claim.claimer ? {
             id: claim.claimer,
             member: client.guild.members.cache.get(claim.claimer),
@@ -40,7 +40,7 @@ class RolCekilis extends ButtonCommand {
                         {
                             type: "BUTTON",
                             style: "SUCCESS",
-                            customId: `temp:${interaction.user.id}.danışma_yetki`,
+                            customId: `temp_danışma:${interaction.user.id}_yetki`,
                             label: "Kabul et"
                         }
                     ]
