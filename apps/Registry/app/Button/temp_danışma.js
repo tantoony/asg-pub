@@ -1,6 +1,6 @@
 const { stripIndent } = require("common-tags/lib");
 const { ButtonCommand } = require("../../../../base/utils");
-
+const { MessageEmbed } = require('discord.js');
 class RolCekilis extends ButtonCommand {
     constructor(client) {
         super(client, {
@@ -20,7 +20,7 @@ class RolCekilis extends ButtonCommand {
             ephemeral: true
         });
         const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
-        await message.components.find(c => c.customId === interaction.customId).setDisabled();
+        await message.components[0].setDisabled();
         const member = client.guild.members.cache.get(interaction.customId.split('-').pop().split('_')[0]);
         if (!member) await interaction.reply({
             content: "Kullanıcı Bulunamadı",
