@@ -67,7 +67,7 @@ class RolCekilis extends ButtonCommand {
                         },
                         {
                             type: "TEXT_INPUT",
-                            style: "DANGER",
+                            style: "SHORT",
                             customId: `temp_danışma_karar:${message.id}_ret`,
                             label: "Başvuruyu Reddet"
                         }
