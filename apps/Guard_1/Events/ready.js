@@ -7,7 +7,7 @@ class Ready extends ClientEvent {
 		});
 		this.client = client;
 	}
-	
+
 	async run(client) {
 		client = this.client;
 		const channels = client.guild.channels.cache.map((c) => c.id);
@@ -25,27 +25,64 @@ class Ready extends ClientEvent {
 					};
 					ovs.push(lol);
 				});
-				await client.models.channels.create({
-					kindOf: channel.type,
-					parent: channel.parentId,
-					keyConf: null,
-					meta: [{
-						_id: channel.id,
-						name: channel.name,
-						position: channel.position,
-						nsfw: channel.nsfw,
-						bitrate: channel.bitrate,
-						rateLimit: channel.rateLimit,
-						userLimit: channel.userLimit,
-						created: channel.createdAt
-					}],
-					overwrites: ovs
-				});
+				switch (channel.type) {
+					case "GUILD_CATEGORY":
+						await client.models.channels.create({
+							kindOf: channel.type,
+							parent: channel.parentId,
+							keyConf: null,
+							meta: [{
+								_id: channel.id,
+								name: channel.name,
+								position: channel.position,
+								created: channel.createdAt
+							}],
+							overwrites: ovs
+						});
+						break;
+
+					case "GUILD_VOICE":
+						await client.models.channels.create({
+							kindOf: channel.type,
+							parent: channel.parentId,
+							keyConf: null,
+							meta: [{
+								_id: channel.id,
+								name: channel.name,
+								position: channel.position,
+								bitrate: channel.bitrate,
+								userLimit: channel.userLimit,
+								created: channel.createdAt
+							}],
+							overwrites: ovs
+						});
+						break;
+
+					case "GUILD_TEXT":
+						await client.models.channels.create({
+							kindOf: channel.type,
+							parent: channel.parentId,
+							keyConf: null,
+							meta: [{
+								_id: channel.id,
+								name: channel.name,
+								position: channel.position,
+								nsfw: channel.nsfw,
+								rateLimit: channel.rateLimit,
+								created: channel.createdAt
+							}],
+							overwrites: ovs
+						});
+						break;
+
+					default:
+						break;
+				}
 			}
 		}
-		
+
 	}
-	
+
 }
 
 module.exports = Ready;
