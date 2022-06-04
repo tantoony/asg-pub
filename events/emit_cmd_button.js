@@ -10,6 +10,7 @@ class ButtonCommandCreate extends ClientEvent {
         if (interaction.guild && (interaction.guild.id !== this.client.config.server)) return;
         let cmd;
         if (interaction.isContextMenu()) return;
+        console.log(interaction.customId);
         if (client.responders.has(`button:${interaction.customId}`)) {
             cmd = client.responders.get(`button:${interaction.customId}`);
         } else if (client.responders.has(`button:${interaction.customId.split('-')[0]}`)) {
