@@ -19,14 +19,13 @@ class RolCekilis extends ButtonCommand {
             content: "Veri Bulunamadı",
             ephemeral: true
         });
-        const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
-        await message.components[0].setDisabled();
+        await interaction.component.setDisabled();
         const member = client.guild.members.cache.get(interaction.customId.split('-').pop().split('_')[0]);
         if (!member) await interaction.reply({
             content: "Kullanıcı Bulunamadı",
             ephemeral: true
         });
-        const channel = await message.channel.parent.createChannel("- Yetkili Başvuru", {
+        const channel = await interaction.channel.parent.createChannel("- Yetkili Başvuru", {
             type: "GUILD_VOICE",
             permissionOverwrites: [
                 {
@@ -53,6 +52,7 @@ class RolCekilis extends ButtonCommand {
             iconURL: interaction.user.avatarURL(),
             name: "Yetki Başvurusu"
         }).setColor("DARK_RED");
+        const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
         await client.guild.channels.cache.get(data.channels["danışma-log"]).send({
             embeds: [embed],
             components: [
