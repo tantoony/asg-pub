@@ -14,7 +14,7 @@ class RolCekilis extends ButtonCommand {
     async run(client, interaction, data) {
         const Data = await client.models.member.findOne({ _id: interaction.user.id });
         const claim = Data.names.filter(peer => peer.name && client.config.tags.some(tag => peer.name.includes(tag)) || client.config.dis === peer.discriminator).pop();
-        const resp = claim.claimer ? {
+        const resp = claim && claim.claimer ? {
             id: claim.claimer,
             member: client.guild.members.cache.get(claim.claimer),
             mention: `<@${claim.claimer}>`,
