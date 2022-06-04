@@ -1,6 +1,6 @@
 const { stripIndent } = require("common-tags/lib");
 const { ButtonCommand } = require("../../../../base/utils");
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, TextInputComponent } = require('discord.js');
 class RolCekilis extends ButtonCommand {
     constructor(client) {
         super(client, {
@@ -67,18 +67,15 @@ class RolCekilis extends ButtonCommand {
                         }
                     ]
                 },
+                new TextInputComponent(
                 {
-                    title: "Reddedilme Sebebi",
-                    customId: "lasdsad",
-                    components: [
-                        {
-                            type: 4,
-                            style: "SHORT",
-                            customId: `temp_danışma_karar:${message.id}_ret`,
-                            label: "Başvuruyu Reddet"
-                        }
-                    ]
-                }
+                    placeholder: "sebep",
+                    type: "TEXT_INPUT",
+                    style: "SHORT",
+                    customId: `temp_danışma_karar:${message.id}_ret`,
+                    label: "Başvuruyu Reddet",
+                    required: true
+                })
             ]
         });
         await client.models.submit.updateOne({
