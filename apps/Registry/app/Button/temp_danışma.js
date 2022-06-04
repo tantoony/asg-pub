@@ -29,7 +29,7 @@ class RolCekilis extends ButtonCommand {
             type: "GUILD_VOICE",
             permissionOverwrites: [
                 {
-                    id: interaction.guild.everyone.id,
+                    id: interaction.guild.roles.everyone.id,
                     type: "ROLE",
                     deny: ["CONNECT"]
                 },
