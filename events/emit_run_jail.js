@@ -19,7 +19,7 @@ class EmitRunJail extends ClientEvent {
             executor: executorId,
             reason: reason,
             extras: [],
-            typeOf: "jail",
+            typeOf: "JAIL",
             until: duration ? require('moment')(new Date()).add(`${duration}m`).toDate() : null,
             created: new Date()
         });
