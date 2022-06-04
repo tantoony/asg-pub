@@ -43,15 +43,15 @@ class GuildMemberUpdate extends ClientEvent {
 			"MANAGE_WEBHOOKS"
 		];
 		let primity = await this.client.models.member.findOne({ _id: entry.executor.id });
-		primity = primity.authorized.filter((prm) => prm.auditType === "MEMBER_ROLE_UPDATE").find((prm) => !prm.until || prm.until.getTime() > new Date().getTime());
+		primity = primity.authorized.filter((prm) => prm.auditType === "MEMBER_ROLE_UPDATE").filter((prm) => !prm.until || prm.until.getTime() > new Date().getTime());
 		if (primity.length === 0 && perms.some(perm => role.permissions.has(perm)) && !entry.executor.bot) {
 			const key = entry.changes[0].key;
 			if (key === '$add') await cur.roles.remove(role);
 			if (key === '$remove') await cur.roles.add(role);
 			const exeMember = cur.guild.members.cache.get(entry.executor.id);
 			client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Rol Verme", "Perma", 1);
-		} else if (primity.until) {
-			await this.client.models.member.updateOne({ _id: entry.executor.id }, { $pull: { authorized: primity } });
+		} else {
+			if (primity.some(p => p.until)) await this.client.models.member.updateOne({ _id: entry.executor.id }, { $pull: { authorized: primity.find(p => p.until) } });
 		}
 
 	}

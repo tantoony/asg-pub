@@ -13,7 +13,7 @@ class GuildMemberUpdate extends ClientEvent {
 		if (cur.guild.id !== client.config.server) return;
 		const entry = await cur.guild.fetchAuditLogs({ type: "MEMBER_ROLE_UPDATE" }).then(logs => logs.entries.first());
 		if (entry.createdTimestamp <= Date.now() - 5000) return;
-		const exeMember = cur.guild.members.cache.get(this.audit.executor.id);
+		const exeMember = cur.guild.members.cache.get(entry.executor.id);
 		const cmutes = await client.models.penalties.find({ userId: cur.user.id, typeOf: "CMUTE"});
         if (cmutes.length > 0 && cmutes.some(cmute => cmute.until.getTime() > new Date().getTime())) {
             const mute = cmutes.find(cmute => cmute.until.getTime() > new Date().getTime())
@@ -26,7 +26,7 @@ class GuildMemberUpdate extends ClientEvent {
 								data: {
 									executor: message.author.id,
 									date: new Date(),
-									audit: this.audit.id
+									audit: entry.id
 								}
 							}
 						}
