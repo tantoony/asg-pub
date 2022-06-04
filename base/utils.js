@@ -548,10 +548,10 @@ const models = {
 	submit: model("temp_submit", new Schema({
 		userId: String,
 		feedId: String,
-		created: Date,
-		claimer: String
+		typeOf: String,
+		claimer: String,
+		created: Date
 	}))
-
 };
 
 function dateTimePad(value, digits) {

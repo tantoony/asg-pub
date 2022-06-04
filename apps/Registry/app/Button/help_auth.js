@@ -46,10 +46,17 @@ class RolCekilis extends ButtonCommand {
                 }
             ]
         });
+        await client.models.submit.create({
+            userId: interaction.user.id,
+            feedId: message.id,
+            typeOf: "yetki",
+            created: new Date(),
+            claim: null
+        });
         await interaction.message.reply({
             content: "Talebiniz Oluşturuldu, kısa bir süre sonra ilgili yetkili size ulaşacaktır.",
             ephemeral: true
-        })
+        });
 
     }
 }
