@@ -544,7 +544,14 @@ const models = {
 		tag: String,
 		type: String,
 		reason: String
+	})),
+	submit: model("temp_submit", new Schema({
+		userId: String,
+		feedId: String,
+		created: Date,
+		claimer: String
 	}))
+
 };
 
 function dateTimePad(value, digits) {
