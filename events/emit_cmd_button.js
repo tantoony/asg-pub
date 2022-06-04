@@ -8,6 +8,7 @@ class ButtonCommandCreate extends ClientEvent {
     }
     async run(interaction) {
         if (interaction.guild && (interaction.guild.id !== this.client.config.server)) return;
+        const client = this.client;
         let cmd;
         if (interaction.isContextMenu()) return;
         console.log(interaction.customId);
@@ -26,13 +27,14 @@ class ButtonCommandCreate extends ClientEvent {
                 ephemeral: true
             });
         }
+        let uCooldown = cmd.cooldown[interaction.user.id];
         if (uCooldown && (uCooldown > Date.now())) return await interaction.reply(`Komutu tekrar kullanabilmek için lütfen **${Math.ceil((time - Date.now()) / 1000)}** saniye bekle!`, {
             ephemeral: true
         });
         try {
-            const res = await cmd.run(client, interaction, this.data);
-            client.log(`[(${interaction.user.id})] ${interaction.user.username} ran command [${cmd.props.name}]`, "slash");
-            if (!res) cmd.cooldown.set(interaction.user.id, Date.now());
+            cmd.run(client, interaction, this.data);
+            client.log(`[(${interaction.user.id})] ${interaction.user.username} ran command [${cmd.props.name}]`, "button");
+            cmd.cooldown.set(interaction.user.id, Date.now());
         } catch (e) {
             client.log(e, "error");
         }
