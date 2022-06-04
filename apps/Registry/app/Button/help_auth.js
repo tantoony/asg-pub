@@ -39,7 +39,7 @@ class RolCekilis extends ButtonCommand {
                         {
                             type: "BUTTON",
                             style: "SUCCESS",
-                            customId: `temp_danışma:${interaction.user.id}_yetki`,
+                            customId: `temp_danışma-${interaction.user.id}_yetki`,
                             label: "Konuşmaya Başla"
                         }
                     ]
