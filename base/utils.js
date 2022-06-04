@@ -187,8 +187,8 @@ class ButtonCommand {
 
 	}
 	load() {
-		this.client.log(`Menu komutu yükleniyor: ${this.props.name} 👌`, "load");
-		this.client.responders.set(`menu:${this.props.name}`, this);
+		this.client.log(`Buton komutu yükleniyor: ${this.props.name} 👌`, "load");
+		this.client.responders.set(`button:${this.props.name}`, this);
 	}
 
 }
