@@ -53,6 +53,14 @@ class RolCekilis extends ButtonCommand {
             name: "Yetki Başvurusu"
         }).setColor("DARK_RED");
         const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
+        const txti = new TextInputComponent({
+            placeholder: "sebep",
+            type: 4,
+            style: "SHORT",
+            customId: `temp_danışma_karar:${message.id}_ret`,
+            label: "Başvuruyu Reddet",
+            required: true
+        });
         await client.guild.channels.cache.get(data.channels["danışma-log"]).send({
             embeds: [embed],
             components: [
@@ -65,15 +73,12 @@ class RolCekilis extends ButtonCommand {
                             customId: `temp_danışma_karar:${message.id}_onay`,
                             label: "Yetki Başlat"
                         },
-                        new TextInputComponent(
                         {
-                            placeholder: "sebep",
-                            type: "TEXT_INPUT",
-                            style: "SHORT",
+                            type: "BUTTON",
+                            style: "DANGER",
                             customId: `temp_danışma_karar:${message.id}_ret`,
-                            label: "Başvuruyu Reddet",
-                            required: true
-                        })
+                            label: "Reddet"
+                        }
                     ]
                 }
             ]
