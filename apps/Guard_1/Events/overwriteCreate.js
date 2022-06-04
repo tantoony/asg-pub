@@ -1,4 +1,4 @@
-const { ClientEvent } = require('../../../../base/utils');
+const { ClientEvent } = require('../../../base/utils');
 class OverwriteCreate extends ClientEvent {
     constructor(client) {
         super(client, {

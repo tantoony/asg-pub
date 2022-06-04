@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { ClientEvent } = require('../../../../base/utils');
+const { ClientEvent } = require('../../../base/utils');
 class OverwriteUpdate extends ClientEvent {
     constructor(client) {
         super(client, {

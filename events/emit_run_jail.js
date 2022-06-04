@@ -14,15 +14,17 @@ class EmitRunJail extends ClientEvent {
         await member.roles.remove(memberRoles);
         await member.roles.add(this.data.roles["prisoner"]);
         if (duration === "p") duration = null;
-        const docum = await this.client.models.penalties.create({
+        let check = await this.client.models.penalties.findOne({ userId: userId });
+        if (!check) check = await this.client.models.penalties.create({
             userId: member.user.id,
             executor: executorId,
             reason: reason,
             extras: [],
-            typeOf: "jail",
+            typeOf: "JAIL",
             until: duration ? require('moment')(new Date()).add(`${duration}m`).toDate() : null,
             created: new Date()
         });
+        const docum = check;
         if (!duration) await this.client.models.penalties.updateOne({ _id: docum._id }, {
             $push: {
                 extras: [

@@ -8,11 +8,11 @@ class ButtonCommandCreate extends ClientEvent {
     }
     async run(interaction) {
         if (interaction.guild && (interaction.guild.id !== this.client.config.server)) return;
-        if (!interaction.isMessageComponent()) return;
-        if (!interaction.isButton()) return;
+        const client = this.client;
+        let cmd;
         if (interaction.isContextMenu()) return;
-        if (client.responders.has(`button:${interaction.commandName}`)) {
-            cmd = client.responders.get(`button:${interaction.commandName}`);
+        if (client.responders.has(`button:${interaction.customId.split(':')}`)[0]) {
+            cmd = client.responders.get(`button:${interaction.customId.split(':')[0]}`);
         } else return;
         if (!cmd.props.enabled) return await interaction.reply(`Bu komut şuan için **devredışı**`, {
             ephemeral: true

@@ -1,32 +1,60 @@
-const Discord = require('discord.js');
+const { stripIndent } = require('common-tags/lib');
+const { MessageEmbed } = require('discord.js');
 const { ButtonCommand } = require("../../../../base/utils");
 
 class RolCekilis extends ButtonCommand {
     constructor(client) {
         super(client, {
-            name: "help_b.authz",
+            name: "help_b.auth",
             cooldown: 10000
         });
         this.client = client;
     }
 
     async run(client, interaction, data) {
-        const mentioned = client.guild.members.cache.get(interaction.user.id);
-        if (interaction.values.includes("hunt_clear") && interaction.values.length === 1) {
-            return await mentioned.roles.remove(Object.keys(data.roles).filter(key => key.startsWith("hunt_")).map(key => data.roles[key]));
-        } else if (interaction.values.includes("hunt_clear")) {
-            return await interaction.reply({
-                content: "Sadece temizle seçeneğini kullan ya da hiç kullanma.",
-                ephemeral: true
-            });
+        const Data = await client.models.member.findOne({ _id: interaction.user.id });
+        const claim = Data.names.filter(peer => client.config.tags.some(tag => peer.name.includes(tag)) || client.config.dis === peer.discriminator).pop();
+        const resp = claim && claim.claimer ? {
+            id: claim.claimer,
+            member: client.guild.members.cache.get(claim.claimer),
+            mention: `<@${claim.claimer}>`,
+            date: `<t:${claim.pop().date.getTime() / 1000}:R>`
+        } : {
+            id: "Aldıran Yok",
+            date: claim ? `<t:${claim.pop().date.getTime() / 1000}:R>` : ""
         }
-        const roleIDs = interaction.values.map(v => data.roles[v]);
-        const rolArray = roleIDs.map(rID => client.guild.roles.cache.get(rID));
-        await mentioned.roles.remove(Object.keys(data.roles).filter(key => key.startsWith("hunt_")).map(key => data.roles[key]));
-        await mentioned.roles.add(roleIDs);
-        const responseEmbed = new Discord.MessageEmbed().setDescription(`Sana;\n ${rolArray.join('\n')}\nrollerini verdim.`);
+        const embed = new MessageEmbed().setDescription(stripIndent`
+        Başvuran: <@${interaction.user.id}>
+        Katılma Tarihi: <t:${Math.round(interaction.member.joinedTimestamp / 1000)}:R> ${claim ? `\nTag aldıran: ${resp.member ? `${resp.mention}` : `[ID: \`${resp.id}\` ]`}${resp.date}` : ""}
+        `).setAuthor({
+            iconURL: interaction.user.avatarURL(),
+            name: "Yetki Başvurusu"
+        }).setColor("DARK_RED");
+        const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).send({
+            embeds: [embed],
+            components: [
+                {
+                    type: "ACTION_ROW",
+                    components: [
+                        {
+                            type: "BUTTON",
+                            style: "SUCCESS",
+                            customId: `temp_danışma:${interaction.user.id}_yetki`,
+                            label: "Konuşmaya Başla"
+                        }
+                    ]
+                }
+            ]
+        });
+        await client.models.submit.create({
+            userId: interaction.user.id,
+            feedId: message.id,
+            typeOf: "yetki",
+            created: new Date(),
+            claim: null
+        });
         return await interaction.reply({
-            embeds: [responseEmbed],
+            content: "Talebiniz Oluşturuldu, kısa bir süre sonra ilgili yetkili size ulaşacaktır.",
             ephemeral: true
         });
 
