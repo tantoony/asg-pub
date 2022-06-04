@@ -27,7 +27,7 @@ class RolCekilis extends ButtonCommand {
         Başvuran: <@${interaction.user.id}>
         Katılma Tarihi: <t:${Math.round(interaction.member.joinedTimestamp / 1000)}:R> ${claim ? `\nTag aldıran: ${resp.member ? `${resp.mention}` : `[ID: \`${resp.id}\` ]`}${resp.date}` : ""}
         `).setAuthor({
-            iconURL: interaction.user.iconURL(),
+            iconURL: interaction.user.avatarURL(),
             name: "Yetki Başvurusu"
         }).setColor("DARK_RED");
         const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).send({
