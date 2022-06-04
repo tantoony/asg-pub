@@ -64,18 +64,18 @@ class RolCekilis extends ButtonCommand {
                             style: "SUCCESS",
                             customId: `temp_danışma_karar:${message.id}_onay`,
                             label: "Yetki Başlat"
-                        }
+                        },
+                        new TextInputComponent(
+                        {
+                            placeholder: "sebep",
+                            type: "TEXT_INPUT",
+                            style: "SHORT",
+                            customId: `temp_danışma_karar:${message.id}_ret`,
+                            label: "Başvuruyu Reddet",
+                            required: true
+                        })
                     ]
-                },
-                new TextInputComponent(
-                {
-                    placeholder: "sebep",
-                    type: "TEXT_INPUT",
-                    style: "SHORT",
-                    customId: `temp_danışma_karar:${message.id}_ret`,
-                    label: "Başvuruyu Reddet",
-                    required: true
-                })
+                }
             ]
         });
         await client.models.submit.updateOne({
