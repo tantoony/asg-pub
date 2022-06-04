@@ -39,11 +39,6 @@ class Ready extends ClientEvent {
 					}
 				});
 			}
-			await this.client.models.member.updateOne({ _id: member.user.id }, {
-				$set: {
-					names: []
-				}
-			});
 			return "zort";
 		});
 		this.client.log(`[KAYITLAR TAMAMLANDI] `, "mongo");
