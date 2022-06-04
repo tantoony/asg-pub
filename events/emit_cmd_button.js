@@ -8,6 +8,7 @@ class ButtonCommandCreate extends ClientEvent {
     }
     async run(interaction) {
         if (interaction.guild && (interaction.guild.id !== this.client.config.server)) return;
+        const client = this.client;
         let cmd;
         if (interaction.isContextMenu()) return;
         if (client.responders.has(`button:${interaction.customId.split(':')}`)[0]) {
