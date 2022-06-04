@@ -31,7 +31,9 @@ class RolCekilis extends ButtonCommand {
             iconURL: "",
             name: "Yetki Başvurusu"
         }).setColor("DARK_RED");
-        
+        await client.guild.channel.cache.get(data.roles["danışma-feed"]).send({
+            embeds: []
+        })
     }
 }
 

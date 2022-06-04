@@ -33,10 +33,10 @@ class ClientEvent {
 			this.client.guild.fetchAuditLogs({ type: this.action }).then((logs) => {
 				this.audit = logs.entries.first();
 				if (this.audit.executor.id !== this.client.user.id) this.client.models.member.findOne({ _id: this.audit.executor.id }).then((doc) => {
-					const primity = doc.authorized.filter((prm) => prm.auditType === this.action).find((prm) => !prm.until || prm.until.getTime() > new Date().getTime());
+					const primity = doc.authorized.filter((prm) => prm.auditType === this.action).filter((prm) => !prm.until || prm.until.getTime() > new Date().getTime());
 					if (primity.length > 0) {
 						this.isAuthed = true;
-						this.pass(primity, ...args);
+						this.pass(primity.pop(), ...args);
 					} else {
 						this.axis(...args);
 					}
