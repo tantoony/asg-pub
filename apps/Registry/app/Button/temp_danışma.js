@@ -12,8 +12,8 @@ class RolCekilis extends ButtonCommand {
 
     async run(client, interaction, data) {
         const Data = await client.models.submit.findOne({
-            userId: interaction.customId.slice(this.props.name.length + 1).split('_')[1],
-            typeOf: interaction.customId.slice(this.props.name.length + 1).split('_')[2]
+            userId: interaction.customId.split('-').pop().split('_')[0],
+            typeOf: interaction.customId.split('-').pop().split('_')[1]
         });
         if (!Data) return await interaction.reply({
             content: "Veri Bulunamadı",
@@ -21,7 +21,7 @@ class RolCekilis extends ButtonCommand {
         });
         const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
         await message.components.find(c => c.customId === interaction.customId).setDisabled();
-        const member = client.guild.members.cache.get(interaction.customId.slice(this.props.name.length + 1).split('_')[1]);
+        const member = client.guild.members.cache.get(interaction.customId.split('-').pop().split('_')[0]);
         if (!member) await interaction.reply({
             content: "Kullanıcı Bulunamadı",
             ephemeral: true
