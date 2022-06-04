@@ -53,7 +53,7 @@ class RolCekilis extends ButtonCommand {
             created: new Date(),
             claim: null
         });
-        await interaction.message.reply({
+        return await interaction.reply({
             content: "Talebiniz Oluşturuldu, kısa bir süre sonra ilgili yetkili size ulaşacaktır.",
             ephemeral: true
         });
