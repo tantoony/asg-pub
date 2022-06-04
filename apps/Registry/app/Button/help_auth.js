@@ -25,10 +25,9 @@ class RolCekilis extends ButtonCommand {
         }
         const embed = new MessageEmbed().setDescription(stripIndent`
         Başvuran: <@${interaction.user.id}>
-        Katılma Tarihi: <t:${interaction.member.joinedTimestamp / 1000}:R>
-        Tag aldıran: ${resp.member ? `${resp.mention}` : `[ID: \`${resp.id}\` ]`} (\`${resp.date}>)
+        Katılma Tarihi: <t:${Math.round(interaction.member.joinedTimestamp / 1000)}:R> ${claim ? `\nTag aldıran: ${resp.member ? `${resp.mention}` : `[ID: \`${resp.id}\` ]`}${resp.date}` : ""}
         `).setAuthor({
-            iconURL: "",
+            iconURL: interaction.user,
             name: "Yetki Başvurusu"
         }).setColor("DARK_RED");
         const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).send({
@@ -41,7 +40,7 @@ class RolCekilis extends ButtonCommand {
                             type: "BUTTON",
                             style: "SUCCESS",
                             customId: `temp_danışma:${interaction.user.id}_yetki`,
-                            label: "Kabul et"
+                            label: "Konuşmaya Başla"
                         }
                     ]
                 }
