@@ -64,14 +64,14 @@ class RolCekilis extends ButtonCommand {
                             style: "SUCCESS",
                             customId: `temp_danışma_karar:${message.id}_onay`,
                             label: "Yetki Başlat"
+                        },
+                        {
+                            type: 4,
+                            style: "SHORT",
+                            customId: `temp_danışma_karar:${message.id}_ret`,
+                            label: "Başvuruyu Reddet"
                         }
                     ]
-                },
-                {
-                    type: "TEXT_INPUT",
-                    style: "SHORT",
-                    customId: `temp_danışma_karar:${message.id}_ret`,
-                    label: "Başvuruyu Reddet"
                 }
             ]
         });
