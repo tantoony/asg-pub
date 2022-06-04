@@ -16,7 +16,7 @@ class Ready extends ClientEvent {
 			const olddata = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channel.id } } });
 			if (!olddata) {
 				const ovs = [];
-				channel.permissionOverwrites.cache.forEach((o) => {
+				if (channel.permissionOverwrites) channel.permissionOverwrites.cache.forEach((o) => {
 					const lol = {
 						_id: o.id,
 						typeOf: o.type,
