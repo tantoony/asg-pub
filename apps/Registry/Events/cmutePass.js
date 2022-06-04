@@ -3,7 +3,7 @@ const { ClientEvent } = require("../../../base/utils");
 class GuildMemberUpdate extends ClientEvent {
 	constructor(client) {
 		super(client, {
-			name: "guildMemberUpdates"
+			name: "guildMemberUpdate"
 		});
 		this.client = client;
 	}
