@@ -40,8 +40,8 @@ class UserUpdate extends ClientEvent {
         }
         */
         await this.client.models.member.updateOne({ _id: newUser.id }, {
-            names: {
-                $push: {
+            $push: {
+                names: {
                     username: newUser.username,
                     discriminator: newUser.discriminator,
                     created: new Date(),
