@@ -50,7 +50,6 @@ class Stat extends PrefixCommand {
         return await message.reply(responseEmbed);
         */
         const canvas = new ChartJSNodeCanvas({ width:960, height:540 });
-        const ctx = canvas.getContext('2d');
         //ctx.beginPath();
         const config = {
             type: "line",
