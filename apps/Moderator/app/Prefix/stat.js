@@ -90,7 +90,7 @@ class Stat extends PrefixCommand {
             }
         }
         const buffer = await canvas.renderToBuffer(config);
-        const file = new MessageAttachment(buffer, "stat.svg");
+        const file = new MessageAttachment(buffer, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
         `).setImage("attachment://stat.png");
         return await message.reply({
