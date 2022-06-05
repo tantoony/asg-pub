@@ -49,9 +49,7 @@ class Stat extends PrefixCommand {
      `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
         return await message.reply(responseEmbed);
         */
-        const { createCanvas, loadImage } = require('canvas');
-        const canvas = createCanvas(960, 540);
-        const ctx = canvas.getContext('2d');
+        const ctx = client.canvas.getContext('2d');
         //ctx.beginPath()
         const myChart = new Chart(ctx, {
             type: "line",
