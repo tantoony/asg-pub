@@ -27,8 +27,11 @@ class Stat extends PrefixCommand {
             
         }
         const kanalGrup = await vData.groupBy(async ({ channelId }) => {
-            
+            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channelId } } });
+            const parent =  await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
+            return client.guild.channels.cache.get(parent.meta.pop()._id).name;
         });
+        console.log(kanalGrup);
         /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
         let days = args[1] || 7;
