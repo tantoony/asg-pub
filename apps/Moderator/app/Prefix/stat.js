@@ -50,7 +50,7 @@ class Stat extends PrefixCommand {
         return await message.reply(responseEmbed);
         */
         const { createCanvas, loadImage } = require('canvas');
-        const canvas = new HTMLCanvasElement();
+        const canvas = createCanvas(960, 540);
         const ctx = canvas.getContext('2d');
         //ctx.beginPath()
         const myChart = new Chart(ctx, {
