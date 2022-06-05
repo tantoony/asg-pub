@@ -1,7 +1,8 @@
-const Discord = require('discord.js');
+const {MessageAttachment} = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
 moment.locale('tr');
+const { Chart } = require('chart.js');
 const { PrefixCommand } = require("../../../../base/utils");
 class Stat extends PrefixCommand {
     constructor(client) {
@@ -16,6 +17,7 @@ class Stat extends PrefixCommand {
         })
     }
     async run(client, message, args) {
+        /*
         const mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
         let days = args[1] || 7;
@@ -45,7 +47,56 @@ class Stat extends PrefixCommand {
         • Mikrofon kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
         • Kulaklık kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
      `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
-        return await message.reply(responseEmbed)
+        return await message.reply(responseEmbed);
+        */
+        const { createCanvas, loadImage } = require('canvas');
+        const canvas = new HTMLCanvasElement();
+        const ctx = canvas.getContext('2d');
+        //ctx.beginPath()
+        const myChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma"],
+                datasets: [
+                    {
+                        label: "Yayın",
+                        backgroundColor: "#7289da",
+                        fill: true,
+                        data: [1.2, 3.5, 2.8, 2, 0.8, 1.2, 3]
+                    },
+                    {
+                        label: "Aktif",
+                        backgroundColor: "#00FF99",
+                        fill: true,
+                        data: [8, 11, 9, 3, 2, 1, 8]
+                    },
+                    {
+                        label: "Toplam",
+                        backgroundColor: "#1e2124",
+                        fill: true,
+                        data: [12, 13, 10, 5, 3, 5, 10]
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        max: 24,
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMin: 50,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            }
+        });
+        const base64 = myChart.toBase64Image();
+        const image = Buffer.from(base64, "base64");
+        const file = new MessageAttachment(image, "stat.png");
+        return await message.reply({
+            files: [file]
+        });
     }
 }
 module.exports = Stat;
