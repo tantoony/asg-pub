@@ -1,4 +1,5 @@
 const { ClientEvent } = require('../base/utils');
+
 class Ready extends ClientEvent {
     constructor(client) {
         super(client, {

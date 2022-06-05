@@ -11,8 +11,11 @@ class ButtonCommandCreate extends ClientEvent {
         const client = this.client;
         let cmd;
         if (interaction.isContextMenu()) return;
-        if (client.responders.has(`button:${interaction.customId.split(':')}`)[0]) {
-            cmd = client.responders.get(`button:${interaction.customId.split(':')[0]}`);
+        console.log(interaction.customId);
+        if (client.responders.has(`button:${interaction.customId}`)) {
+            cmd = client.responders.get(`button:${interaction.customId}`);
+        } else if (client.responders.has(`button:${interaction.customId.split('-')[0]}`)) {
+            cmd = client.responders.get(`button:${interaction.customId.split('-')[0]}`);
         } else return;
         if (!cmd.props.enabled) return await interaction.reply(`Bu komut şuan için **devredışı**`, {
             ephemeral: true
@@ -24,13 +27,14 @@ class ButtonCommandCreate extends ClientEvent {
                 ephemeral: true
             });
         }
+        let uCooldown = cmd.cooldown[interaction.user.id];
         if (uCooldown && (uCooldown > Date.now())) return await interaction.reply(`Komutu tekrar kullanabilmek için lütfen **${Math.ceil((time - Date.now()) / 1000)}** saniye bekle!`, {
             ephemeral: true
         });
         try {
-            const res = await cmd.run(client, interaction, this.data);
-            client.log(`[(${interaction.user.id})] ${interaction.user.username} ran command [${cmd.props.name}]`, "slash");
-            if (!res) cmd.cooldown.set(interaction.user.id, Date.now());
+            cmd.run(client, interaction, this.data);
+            client.log(`[(${interaction.user.id})] ${interaction.user.username} ran command [${cmd.props.name}]`, "button");
+            cmd.cooldown.set(interaction.user.id, Date.now());
         } catch (e) {
             client.log(e, "error");
         }

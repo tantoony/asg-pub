@@ -4,10 +4,9 @@
     "private": true,
     "dependencies": {
         "@discordjs/voice": "^0.9.0",
+        "@napi-rs/canvas": "^0.1.22",
         "axios": "^0.26.1",
-        "canvas-node": "0.3.23",
-        "chart.js": "^3.6.2",
-        "chartjs-node-canvas": "4.1.5",
+        "chartjs-node-canvas": "^4.1.6",
         "common-tags": "1.8.2",
         "cron": "^2.0.0",
         "discord.js": "^13.7.0",

@@ -1,7 +1,8 @@
-const Discord = require('discord.js');
+const { MessageAttachment, MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
 moment.locale('tr');
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { PrefixCommand } = require("../../../../base/utils");
 class Stat extends PrefixCommand {
     constructor(client) {
@@ -16,6 +17,7 @@ class Stat extends PrefixCommand {
         })
     }
     async run(client, message, args) {
+        /*
         const mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
         let days = args[1] || 7;
@@ -45,7 +47,56 @@ class Stat extends PrefixCommand {
         • Mikrofon kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
         • Kulaklık kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
      `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
-        return await message.reply(responseEmbed)
+        return await message.reply(responseEmbed);
+        */
+        const canvas = new ChartJSNodeCanvas({ width:960, height:540 });
+        //ctx.beginPath();
+        const config = {
+            type: "line",
+            data: {
+                labels: ["cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma"],
+                datasets: [
+                    {
+                        label: "Yayın",
+                        backgroundColor: "#7289da",
+                        fill: true,
+                        data: [1.2, 3.5, 2.8, 2, 0.8, 1.2, 3]
+                    },
+                    {
+                        label: "Aktif",
+                        backgroundColor: "#00FF99",
+                        fill: true,
+                        data: [8, 11, 9, 3, 2, 1, 8]
+                    },
+                    {
+                        label: "Toplam",
+                        backgroundColor: "#1e2124",
+                        fill: true,
+                        data: [12, 13, 10, 5, 3, 5, 10]
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        max: 24,
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMin: 50,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            }
+        }
+        const buffer = await canvas.renderToBuffer(config);
+        const file = new MessageAttachment(buffer, "stat.png");
+        const embed = new MessageEmbed().setDescription(stripIndent` sa
+        `).setImage("attachment://stat.png");
+        return await message.reply({
+            files: [file],
+            embeds: [embed]
+        });
     }
 }
 module.exports = Stat;

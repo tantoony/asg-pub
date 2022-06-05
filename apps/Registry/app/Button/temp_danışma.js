@@ -1,6 +1,6 @@
 const { stripIndent } = require("common-tags/lib");
 const { ButtonCommand } = require("../../../../base/utils");
-
+const { MessageEmbed, TextInputComponent } = require('discord.js');
 class RolCekilis extends ButtonCommand {
     constructor(client) {
         super(client, {
@@ -12,25 +12,24 @@ class RolCekilis extends ButtonCommand {
 
     async run(client, interaction, data) {
         const Data = await client.models.submit.findOne({
-            userId: interaction.customId.split(':').pop().split('_')[0],
-            typeOf: interaction.customId.split(':').pop().split('_')[1]
+            userId: interaction.customId.split('-').pop().split('_')[0],
+            typeOf: interaction.customId.split('-').pop().split('_')[1]
         });
-        if (!Data) await interaction.reply({
+        if (!Data) return await interaction.reply({
             content: "Veri Bulunamadı",
             ephemeral: true
         });
-        const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
-        await message.components.find(c => c.customId === interaction.customId).setDisabled();
-        const member = client.guild.members.cache.get(interaction.customId.split(':').pop().split('_')[0]);
+        await interaction.component.setDisabled();
+        const member = client.guild.members.cache.get(interaction.customId.split('-').pop().split('_')[0]);
         if (!member) await interaction.reply({
             content: "Kullanıcı Bulunamadı",
             ephemeral: true
         });
-        const channel = await message.channel.parent.createChannel("- Yetkili Başvuru", {
+        const channel = await interaction.channel.parent.createChannel("- Yetkili Başvuru", {
             type: "GUILD_VOICE",
             permissionOverwrites: [
                 {
-                    id: interaction.guild.everyone.id,
+                    id: interaction.guild.roles.everyone.id,
                     type: "ROLE",
                     deny: ["CONNECT"]
                 },
@@ -53,6 +52,15 @@ class RolCekilis extends ButtonCommand {
             iconURL: interaction.user.avatarURL(),
             name: "Yetki Başvurusu"
         }).setColor("DARK_RED");
+        const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
+        const txti = new TextInputComponent({
+            placeholder: "sebep",
+            type: 4,
+            style: "SHORT",
+            customId: `temp_danışma_karar:${message.id}_ret`,
+            label: "Başvuruyu Reddet",
+            required: true
+        });
         await client.guild.channels.cache.get(data.channels["danışma-log"]).send({
             embeds: [embed],
             components: [
@@ -66,10 +74,10 @@ class RolCekilis extends ButtonCommand {
                             label: "Yetki Başlat"
                         },
                         {
-                            type: "TEXT_INPUT",
+                            type: "BUTTON",
                             style: "DANGER",
                             customId: `temp_danışma_karar:${message.id}_ret`,
-                            label: "Başvuruyu Reddet"
+                            label: "Reddet"
                         }
                     ]
                 }
