@@ -1,7 +1,6 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
-moment.locale('tr');
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { PrefixCommand } = require("../../../../base/utils");
 class Stat extends PrefixCommand {
@@ -17,11 +16,27 @@ class Stat extends PrefixCommand {
         })
     }
     async run(client, message, args) {
-        /*
         const mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
+        //if (mentioned.user.id !== message.author.id) args = args.slice(1);
+        const since = moment(new Date()).subtract(7, "days").toISOString();
+        const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
+        const records = [];
+        /*
+        for (let i = 0; i < vData.length; i++) {
+            const entry = vData[i];
+            if (!entry.channelId) {}
+            
+        }
+        */
+        const kanalGrup = await vData.map(d => d).groupBy(async ({ channelId }) => {
+            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channelId } } });
+            const parent =  await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
+            return client.guild.channels.cache.get(parent.meta.pop()._id).name;
+        });
+        console.log(kanalGrup);
+        /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
         let days = args[1] || 7;
-        const Data = await client.models.voice.findOne({ userId: mentioned.user.id });
         if (!Data) return message.reply(`Veri bulunamadı...`);
         const records = Data.filter(r => checkDays(r.enter) < days);
         const birim = [
@@ -49,8 +64,7 @@ class Stat extends PrefixCommand {
      `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
         return await message.reply(responseEmbed);
         */
-        const canvas = new ChartJSNodeCanvas({ width:960, height:540 });
-        //ctx.beginPath();
+        const canvas = new ChartJSNodeCanvas({ width: 960, height: 540 });
         const config = {
             type: "line",
             data: {
@@ -92,7 +106,7 @@ class Stat extends PrefixCommand {
         const buffer = await canvas.renderToBuffer(config);
         const file = new MessageAttachment(buffer, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
-        `).setImage("attachment://stat.png");
+        `).setImage("attachment://stat.png").setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor);
         return await message.reply({
             files: [file],
             embeds: [embed]

@@ -32,7 +32,7 @@ class ClientEvent {
 		if (this.action) {
 			this.client.guild.fetchAuditLogs({ type: this.action }).then((logs) => {
 				this.audit = logs.entries.first();
-				if (this.audit.executor.id !== this.client.user.id) this.client.models.member.findOne({ _id: this.audit.executor.id }).then((doc) => {
+				this.client.models.member.findOne({ _id: this.audit.executor.id }).then((doc) => {
 					const primity = doc.authorized.filter((prm) => prm.auditType === this.action).filter((prm) => !prm.until || prm.until.getTime() > new Date().getTime());
 					if (primity.length > 0) {
 						this.isAuthed = true;
@@ -63,7 +63,7 @@ class ClientEvent {
 		if (this.audit.createdTimestamp <= Date.now() - 5000) return;
 		if (this.audit.executor.id === this.client.user.id) return;
 		if (this.privity) this.client.emit('danger', ["ADMINISTRATOR", "BAN_MEMBERS", "MANAGE_CHANNELS", "KICK_MEMBERS", "MANAGE_GUILD", "MANAGE_WEBHOOKS", "MANAGE_ROLES"]);
-		this.client.emit(this.punish, this.audit.executor.id, this.client.user.id, this.action, "p", `auditId: ${this.audit.id}`);
+		if (this.punish) this.client.emit(this.punish, this.audit.executor.id, this.client.user.id, this.action, "p", `auditId: ${this.audit.id}`);
 		try {
 			this.refix(...params);
 		} catch (error) {
