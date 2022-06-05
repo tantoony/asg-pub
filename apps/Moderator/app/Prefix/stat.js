@@ -92,8 +92,11 @@ class Stat extends PrefixCommand {
             }
         });
         ctx.clip();
-        const buffer = canvas.toBuffer("image/png"); 
-        const file = new MessageAttachment(buffer, "stat.png");
+        myChart.draw();
+        const base64 = myChart.toBase64Image("image/png");
+        const image = Buffer.from(base64, "base64");
+        myChart.destroy();
+        const file = new MessageAttachment(image, "stat.svg");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
         `).setImage("attachment://stat.png");
         return await message.reply({
