@@ -21,12 +21,14 @@ class Stat extends PrefixCommand {
         const since = moment(new Date()).subtract(7, "days").toISOString();
         const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
         const records = [];
+        /*
         for (let i = 0; i < vData.length; i++) {
             const entry = vData[i];
             if (!entry.channelId) {}
             
         }
-        const kanalGrup = await vData.groupBy(async ({ channelId }) => {
+        */
+        const kanalGrup = await vData.map(d => d).groupBy(async ({ channelId }) => {
             const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channelId } } });
             const parent =  await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
             return client.guild.channels.cache.get(parent.meta.pop()._id).name;
