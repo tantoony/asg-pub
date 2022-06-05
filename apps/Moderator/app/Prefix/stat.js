@@ -26,8 +26,8 @@ class Stat extends PrefixCommand {
             if (!entry.channelId) {}
             
         }
-        const kanalGrup = vData.groupBy(({ channelId }) => {
-
+        const kanalGrup = await vData.groupBy(async ({ channelId }) => {
+            
         });
         /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
