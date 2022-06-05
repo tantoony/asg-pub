@@ -90,7 +90,9 @@ class Stat extends PrefixCommand {
                 }
             }
         });
+        myChart.draw();
         const base64 = myChart.toBase64Image();
+        myChart.destroy();
         const image = Buffer.from(base64, "base64");
         const file = new MessageAttachment(image, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
