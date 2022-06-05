@@ -1,4 +1,4 @@
-const {MessageAttachment} = require('discord.js');
+const { MessageAttachment, MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
 moment.locale('tr');
@@ -92,7 +92,10 @@ class Stat extends PrefixCommand {
         const base64 = myChart.toBase64Image();
         const image = Buffer.from(base64, "base64");
         const file = new MessageAttachment(image, "stat.png");
+        const embed = new MessageEmbed().setDescription(stripIndent` sa
+        `).setImage("attachment://stat.png");
         return await message.reply({
+            embeds: [embed],
             files: [file]
         });
     }
