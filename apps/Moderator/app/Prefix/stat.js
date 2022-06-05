@@ -28,11 +28,13 @@ class Stat extends PrefixCommand {
             
         }
         */
-        const kanalGrup = await vData.map(d => d).groupBy(async ({ channelId }) => {
-            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channelId } } });
-            const parent =  await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
-            return client.guild.channels.cache.get(parent.meta.pop()._id).name;
-        });
+        const mapData = await vData.map(async (data) => {
+            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: data.channelId } } });
+            const parent = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
+            data.parent = client.guild.channels.cache.get(parent.meta.pop()._id).name;
+            return data;
+        })
+        const kanalGrup = require('lodash').groupBy(mapData, "parent");
         console.log(kanalGrup);
         /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
