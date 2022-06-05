@@ -32,14 +32,11 @@ class GuildMemberUpdate extends ClientEvent {
 						}
 					});
 				} else {
-
-
-
+					await cur.roles.add(this.data.roles["muted"]);
+					if (exeMember.roles.cache.has(this.data.roles["root"])) return;
+					client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Mute Açma", "Perma", 1);
 				}
-				await cur.roles.add(this.data.roles["muted"]);
-				if (exeMember.roles.cache.has(this.data.roles["root"])) return;
-				client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Mute Açma", "Perma", 1);
-			}
+			} else return;
         }
 	}
 }
