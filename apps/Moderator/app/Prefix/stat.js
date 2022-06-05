@@ -49,9 +49,10 @@ class Stat extends PrefixCommand {
      `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
         return await message.reply(responseEmbed);
         */
-        const canvas = client.canvas;
+        const { createCanvas, loadImage } = require('canvas');
+        const canvas = createCanvas(960, 540, "svg");
         const ctx = canvas.getContext('2d');
-        //ctx.beginPath()
+        ctx.beginPath();
         const myChart = new Chart(ctx, {
             type: "line",
             data: {
@@ -90,9 +91,7 @@ class Stat extends PrefixCommand {
                 }
             }
         });
-        myChart.draw();
         const base64 = myChart.toBase64Image();
-        myChart.destroy();
         const image = Buffer.from(base64, "base64");
         const file = new MessageAttachment(image, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
