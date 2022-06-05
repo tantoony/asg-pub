@@ -1,5 +1,5 @@
 const { ClientEvent } = require('../base/utils');
-const { createCanvas, loadImage } = require('canvas');
+
 class Ready extends ClientEvent {
     constructor(client) {
         super(client, {

@@ -2,7 +2,7 @@ const { MessageAttachment, MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
 moment.locale('tr');
-const { Chart } = require('chart.js');
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { PrefixCommand } = require("../../../../base/utils");
 class Stat extends PrefixCommand {
     constructor(client) {
@@ -49,11 +49,10 @@ class Stat extends PrefixCommand {
      `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
         return await message.reply(responseEmbed);
         */
-        const { createCanvas, loadImage } = require('canvas');
-        const canvas = createCanvas(960, 540, "svg");
+        const canvas = new ChartJSNodeCanvas({ width:960, height:540 });
         const ctx = canvas.getContext('2d');
         //ctx.beginPath();
-        const myChart = new Chart(ctx, {
+        const config = {
             type: "line",
             data: {
                 labels: ["cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma"],
@@ -90,13 +89,9 @@ class Stat extends PrefixCommand {
                     }
                 }
             }
-        });
-        ctx.clip();
-        myChart.draw();
-        const base64 = myChart.toBase64Image("image/png");
-        const image = Buffer.from(base64, "base64");
-        myChart.destroy();
-        const file = new MessageAttachment(image, "stat.svg");
+        }
+        const buffer = await canvas.renderToBuffer(config);
+        const file = new MessageAttachment(buffer, "stat.svg");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
         `).setImage("attachment://stat.png");
         return await message.reply({
