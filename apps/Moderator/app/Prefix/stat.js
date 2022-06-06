@@ -61,7 +61,7 @@ class Stat extends PrefixCommand {
         function getDataDay(data) {
             const res = [];
             for (let d = 0; d < 7; d++) {
-                res.push(data.filter(dt => dt.day === d).map(dt => dt.duration).reduce((p, c) => c + p, 0));
+                res.push(data.filter(dt => dt.day === d).map(dt => dt.duration).reduce((p, c) => c + p, 0) / 3600000);
             }
             return res;
         };
