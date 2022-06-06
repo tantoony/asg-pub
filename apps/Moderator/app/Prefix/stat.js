@@ -104,9 +104,11 @@ class Stat extends PrefixCommand {
                         }
                     }
                 },
-                elements: {
-                    line: {
-                        borderColor: "#ffffff"
+                plugins: {
+                    legend: {
+                        font: {
+                            color: "#ffffff"
+                        }
                     }
                 }
             }
