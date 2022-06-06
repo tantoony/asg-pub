@@ -29,16 +29,17 @@ class Stat extends PrefixCommand {
             "_id",
             "created"
         ], { sort: { created: 1 } });
+        const cData = await client.models.channels.find();
         const records = {};
         for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
             const nextData = vData[t + 1];
             const diff = moment(nextData.created).diff(vLog.created);
-            const vCnl_p = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vLog.channelId } } });
+            const vCnl_p = cData.find(d => d.meta.some(m => m._id === vLog.channelId));
             if (vLog.channelId) {
                 if (!records[vLog.channelId]) records[vLog.channelId] = [];
                 let ary = records[vLog.channelId];
-                const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p ? vCnl_p.parent : "" } } });
+                const parentData = cData.find(d => d.meta.some(m => m._id === (vCnl_p ? vCnl_p.parent : "")));
                 const parent = client.guild.channels.cache.get(parentData ? parentData.meta.pop()._id : "");
                 const entry = {
                     category: parent ? parent.name : "\`Bilinmiyor\`",
@@ -100,7 +101,7 @@ class Stat extends PrefixCommand {
                             suggestedMin: 50,
                             suggestedMax: 100
                         }
-                    } 
+                    }
                 }
             }
         }
