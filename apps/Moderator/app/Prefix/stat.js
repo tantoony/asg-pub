@@ -110,7 +110,7 @@ class Stat extends PrefixCommand {
         const buffer = await canvas.renderToBuffer(config);
         const file = new MessageAttachment(buffer, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` <@${mentioned}> üyesinin ses bilgileri:
-        ${cnlStr.map(s => records[s]).slice(0, 4).map(c => `<#${c.channelId}> ${Math.round(c.map(r => r.duration).reduce((p, c) => p + c, 0) / 36000000)} saat `).join("\n")}
+        ${cnlStr.slice(0, 4).map(c => `<#${c}> ${Math.round(records[c].map(r => r.duration).reduce((p, f) => p + f, 0) / 36000000)} saat `).join("\n")}
         `).setImage("attachment://stat.png").setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor);
         return await message.reply({
             files: [file],
