@@ -40,7 +40,7 @@ class Stat extends PrefixCommand {
                 records.push(entry)
             }
         }
-        const kanalGrup = require('lodash').groupBy(mapData, "category");
+        const kanalGrup = require('lodash').groupBy(records, "category");
         console.log(kanalGrup);
         /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
