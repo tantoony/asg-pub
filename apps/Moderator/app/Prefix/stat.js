@@ -1,7 +1,6 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
-const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { PrefixCommand } = require("../../../../base/utils");
 class Stat extends PrefixCommand {
     constructor(client) {
@@ -19,112 +18,77 @@ class Stat extends PrefixCommand {
         const mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
         //if (mentioned.user.id !== message.author.id) args = args.slice(1);
         const since = moment(new Date()).subtract(7, "days").toISOString();
-        const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
-        const records = [];
-        let switcher = false;
-        let exChannel = null;
-        function msToTime(duration) {
-            var milliseconds = Math.floor((duration % 1000) / 100),
-                seconds = Math.floor((duration / 1000) % 60),
-                minutes = Math.floor((duration / (1000 * 60)) % 60),
-                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-            /*
-            hours = (hours < 10) ? "0" + hours : hours;
-            minutes = (minutes < 10) ? "0" + minutes : minutes;
-            seconds = (seconds < 10) ? "0" + seconds : seconds;
-            */
-            return hours + " saat, " + minutes + " dk, " + seconds + " sn";
-        }
-        let entry;
-        const Records = {};
-        for (let t = 0, c = 0; t < vData.length - 1; t + c) {
+        const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, [
+            "channelId",
+            "self_deaf",
+            "self_mute",
+            "server_mute",
+            "server_mute",
+            "webcam",
+            "streaming",
+            "_id",
+            "created"
+        ], { sort: { created: 1 } });
+        const cData = await client.models.channels.find();
+        const records = {};
+        for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
             const nextData = vData[t + 1];
-            if (vLog.channelId && vLog.channelId === nextData.channelId) {
-                entry = {
+            const diff = moment(nextData.created).diff(vLog.created);
+            const vCnl_p = cData.find(d => d.meta.some(m => m._id === vLog.channelId));
+            if (vLog.channelId) {
+                if (!records[vLog.channelId]) records[vLog.channelId] = [];
+                let ary = records[vLog.channelId];
+                const parentData = cData.find(d => d.meta.some(m => m._id === (vCnl_p ? vCnl_p.parent : "")));
+                const parent = client.guild.channels.cache.get(parentData ? parentData.meta.pop()._id : "");
+                const entry = {
+                    category: parent ? parent.name : "\`Bilinmiyor\`",
                     channelId: vLog.channelId,
-                    isActive: !vLog.self_deaf && !vLog.self_mute && !server_mute && !server_mute,
+                    isActive: !vLog.self_deaf && !vLog.self_mute && !vLog.server_mute && !vLog.server_mute,
                     isStreaming: vLog.webcam || vLog.streaming,
-                    duration: moment(vData[vData.length - c].created).diff(vLog.created, "hours")
+                    duration: diff,
+                    day: vLog.created.getDay()
                 };
-            } else {
-                c = c + 1;
+                ary.push(entry);
+                records[vLog.channelId] = ary;
             }
-            const data = {
-                channelId: vLog.channelId,
-                isActive: !vLog.self_deaf && !vLog.self_mute && !server_mute && !server_mute,
-                isStreaming: vLog.webcam || vLog.streaming,
-                duration: moment(nextData.created).subtract(vLog.created)
+        };
+        const myData = {
+            total: Object.values(records).flat(),
+            aktif: Object.values(records).flat().filter(d => d.isActive),
+            yayın: Object.values(records).flat().filter(d => d.isStreaming)
+        };
+        function getDataDay(data) {
+            const res = [];
+            for (let d = 0; d < 7; d++) {
+                res.push(data.filter(dt => dt.day === d).map(dt => dt.duration).reduce((p, c) => c + p, 0) / 3600000);
             }
-            if (exChannel && exChannel === vLog.channelId) {
-
-            } else {
-                exChannel = vLog.channelId;
-            }
-            exChannel = vLog.channelId;
-
-        }
-        const mapData = await vData.map(async (data) => {
-            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: data.channelId } } });
-            const parent = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
-            data.parent = client.guild.channels.cache.get(parent.meta.pop()._id).name;
-            return data;
-        })
-        const kanalGrup = require('lodash').groupBy(mapData, "parent");
-        console.log(kanalGrup);
-        /*
-        if (mentioned.user.id !== message.author.id) args = args.slice(1);
-        let days = args[1] || 7;
-        if (!Data) return message.reply(`Veri bulunamadı...`);
-        const records = Data.filter(r => checkDays(r.enter) < days);
-        const birim = [
-            "Saat",
-            "Dakika",
-            "Saniye"
-        ];
-        const responseEmbed = new Discord.MessageEmbed().setDescription(stripIndent`
-        ${mentioned} kişisine ait ${days} günlük ses bilgileri:
-        **Genel Bilgileri:**
-        • ID: \`${mentioned.id}\`
-        • Kullanıcı: ${mentioned}
-        • Sunucuya Katılma Tarihi: \`<t:${Math.round(mentioned.joinedTimestamp / 1000)}:R>
-        • Geçirilen toplam süre: \`${new Date(records.map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-
-        **Ses Bilgileri:**
-        • Public ses süresi: \`${new Date(records.filter(r => r.channelType === "st_public").map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-        • Register ses süresi: \`${new Date(records.filter(r => r.channelType === "st_registry").map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-        • Private ses süsresi: \`${new Date(records.filter(r => r.channelType === "st_private").map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-
-        **Toplam Ses İstatistikleri**
-        • Toplam ses: \`${new Date(records.map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").join(' ')}\`
-        • Mikrofon kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-        • Kulaklık kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-     `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
-        return await message.reply(responseEmbed);
-        */
-        const canvas = new ChartJSNodeCanvas({ width: 960, height: 540 });
+            return res;
+        };
+        const daysTr = ["pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar"];
+        const dayNum = new Date().getDay();
         const config = {
             type: "line",
             data: {
-                labels: ["cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma"],
+                labels: daysTr.slice(dayNum, dayNum + 7),
                 datasets: [
                     {
                         label: "Yayın",
                         backgroundColor: "#7289da",
                         fill: true,
-                        data: [1.2, 3.5, 2.8, 2, 0.8, 1.2, 3]
+                        data: getDataDay(myData.yayın)
                     },
                     {
                         label: "Aktif",
                         backgroundColor: "#00FF99",
                         fill: true,
-                        data: [8, 11, 9, 3, 2, 1, 8]
+                        data: getDataDay(myData.aktif)
                     },
                     {
                         label: "Toplam",
                         backgroundColor: "#1e2124",
                         fill: true,
-                        data: [12, 13, 10, 5, 3, 5, 10]
+                        data: getDataDay(myData.total)
                     }
                 ]
             },
@@ -141,6 +105,7 @@ class Stat extends PrefixCommand {
                 }
             }
         }
+        const canvas = client.canvas;
         const buffer = await canvas.renderToBuffer(config);
         const file = new MessageAttachment(buffer, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` sa

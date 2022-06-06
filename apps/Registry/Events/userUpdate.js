@@ -50,14 +50,14 @@ class UserUpdate extends ClientEvent {
             }
         });
         const points = Object.values(client.config.point);
-        let point = points.find(p => member.displayName.startWith(p));
+        let point = points.find(p => member.displayName.startsWith(p));
         const prevTaglı = client.config.tags.some(t => oldUser.username.includes(t)) || oldUser.discriminator === client.config.dis;
         const curTaglı = client.config.tags.some(t => newUser.username.includes(t)) || newUser.discriminator === client.config.dis;
         const freshTagged = !prevTaglı && curTaglı;
         const stillTagged = prevTaglı && curTaglı;
         const quitTag = prevTaglı && !curTaglı;
         const stillOut = !prevTaglı && !curTaglı;
-        
+        if (!point) point = client.config.point.default
         if (freshTagged) {
             await member.setNickname(member.displayName.replace(point, client.config.point.tagged));
             await member.roles.add(this.data.roles["taglı"]);
@@ -80,9 +80,9 @@ class UserUpdate extends ClientEvent {
             const embed = new Discord.MessageEmbed().setColor('#ff0000').setTitle("Tagımızı Saldı!").setDescription(`${member} tagımızı saldı!`).setThumbnail(newUser.displayAvatarURL());
             await guild.channels.cache.get(this.data.channels["salan-taglı"]).send({ embed: [embed] });
         }
-        if (!point) {
+        if (stillOut && member.roles.cache.has(this.data.roles["taglı"])) await member.roles.remove(this.data.roles["taglı"]);
+        if (stillTagged && !member.roles.cache.has(this.data.roles["taglı"])) await member.roles.add(this.data.roles["taglı"]);
 
-        }
     }
 }
 module.exports = UserUpdate;
