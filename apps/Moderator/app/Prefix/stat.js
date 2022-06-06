@@ -19,7 +19,7 @@ class Stat extends PrefixCommand {
         const mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
         //if (mentioned.user.id !== message.author.id) args = args.slice(1);
         const since = moment(new Date()).subtract(7, "days").toISOString();
-        const _vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, [
+        const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, [
             "channelId",
             "self_deaf",
             "self_mute",
@@ -30,16 +30,14 @@ class Stat extends PrefixCommand {
             "_id"
         ], { sort: { created: 1 } });
         const records = {};
-        const vData = _vData.map((d) => d);
         for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
-            console.log(vData);
             const nextData = vData[t + 1];
             const diff = moment(nextData.created).diff(vLog.created);
             if (!records[vLog.channelId]) records[vLog.channelId] = [];
             let ary = records[vLog.channelId];
             if (vLog.channelId) {
-                const vCnl_p = await client.models.channels.find({ meta: { $elemMatch: { _id: vLog.channelId } } });
+                const vCnl_p = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vLog.channelId } } });
                 const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p.parent } } });
                 const parent = client.guild.channels.cache.get(parentData.meta.pop()._id);
                 const entry = {
