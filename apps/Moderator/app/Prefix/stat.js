@@ -34,10 +34,10 @@ class Stat extends PrefixCommand {
             const vLog = vData[t];
             const nextData = vData[t + 1];
             const diff = moment(nextData.created).diff(vLog.created);
-            if (!records[vLog.channelId]) records[vLog.channelId] = [];
-            let ary = records[vLog.channelId];
+            const vCnl_p = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vLog.channelId } } });
             if (vLog.channelId) {
-                const vCnl_p = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vLog.channelId } } });
+                if (!records[vLog.channelId]) records[vLog.channelId] = [];
+                let ary = records[vLog.channelId];
                 const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p.parent } } });
                 const parent = client.guild.channels.cache.get(parentData.meta.pop()._id);
                 const entry = {
