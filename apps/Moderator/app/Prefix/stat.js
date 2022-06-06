@@ -29,7 +29,6 @@ class Stat extends PrefixCommand {
             "streaming",
             "_id"
         ], { sort: { created: 1 } });
-        const vChannels = await client.models.channels.find({ kindOf: "GUILD_VOICE" });
         const records = {};
         const vData = _vData.map((d) => d);
         for (let t = 0; t < vData.length - 1; t++) {
@@ -40,8 +39,8 @@ class Stat extends PrefixCommand {
             if (!records[vLog.channelId]) records[vLog.channelId] = [];
             let ary = records[vLog.channelId];
             if (vLog.channelId) {
-                const vCnl_p = vChannels.find(doc => doc.meta.some(m => m._id === vLog.channelId)).parent;
-                const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p } } });
+                const vCnl_p = await client.models.channels.find({ meta: { $elemMatch: { _id: vLog.channelId } } });
+                const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p.parent } } });
                 const parent = client.guild.channels.cache.get(parentData.meta.pop()._id);
                 const entry = {
                     category: parent ? parent.name : "\`Bilinmiyor\`",
