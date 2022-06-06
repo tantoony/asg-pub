@@ -66,7 +66,6 @@ class Stat extends PrefixCommand {
             return res;
         };
         const daysTr = ["pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar"];
-        const canvas = new ChartJSNodeCanvas({ width: 960, height: 540 });
         const dayNum = new Date().getDay();
         const config = {
             type: "line",
@@ -106,7 +105,7 @@ class Stat extends PrefixCommand {
                 }
             }
         }
-        const buffer = await canvas.renderToBuffer(config);
+        const buffer = await client.canvas.renderToBuffer(config);
         const file = new MessageAttachment(buffer, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
         `).setImage("attachment://stat.png").setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor);
