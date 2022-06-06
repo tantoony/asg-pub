@@ -21,12 +21,11 @@ class Stat extends PrefixCommand {
         const since = moment(new Date()).subtract(7, "days").toISOString();
         const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
         const vChannels = await client.models.channels.find({ kindOf: "GUILD_VOICE" });
-        const records = {};
+        const records = [];
         for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
             const nextData = vData[t + 1];
             const diff = moment(nextData.created).diff(vLog.created);
-            if (!records[vLog.channelId]) records[vLog.channelId] = [];
             if (vLog.channelId) {
                 const vCnl_p = vChannels.find(doc => doc.meta.some(m => m._id === vLog.channelId)).parent;
                 const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p } } });
@@ -38,7 +37,7 @@ class Stat extends PrefixCommand {
                     isStreaming: vLog.webcam || vLog.streaming,
                     duration: diff
                 };
-                records[vLog.channelId].push(entry)
+                records.push(entry)
             }
         }
         const kanalGrup = require('lodash').groupBy(mapData, "category");
