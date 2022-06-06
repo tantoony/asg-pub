@@ -41,7 +41,7 @@ class Stat extends PrefixCommand {
                 records[vLog.channelId].push(entry);
             }
         }
-        console.log(kanalGrup);
+        console.log(records);
         /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
         let days = args[1] || 7;
