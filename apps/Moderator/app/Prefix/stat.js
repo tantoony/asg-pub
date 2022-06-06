@@ -66,7 +66,6 @@ class Stat extends PrefixCommand {
             return res;
         };
         const cnlStr = Object.keys(records).sort((a, b) => records[b].map(e => e.duration).reduce((p, c) => p + c, 0) - records[a].map(e => e.duration).reduce((p, c) => p + c, 0));
-        console.log(cnlStr);
         const daysTr = ["pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar"];
         const dayNum = new Date().getDay();
         const config = {
