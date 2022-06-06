@@ -107,10 +107,12 @@ class Stat extends PrefixCommand {
                 plugins: {
                     legend: {
                         font: {
-                            color: "#ffffff"
+                            style: "bold",
+                            size: 18
                         }
                     }
-                }
+                },
+                color: "#ffffff"
             }
         }
         const canvas = client.canvas;
