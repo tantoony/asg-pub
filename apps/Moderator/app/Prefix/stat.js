@@ -38,7 +38,7 @@ class Stat extends PrefixCommand {
             let ary = records[vLog.channelId];
             if (vLog.channelId) {
                 const vCnl_p = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vLog.channelId } } });
-                const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p.toJson()["parent"] } } });
+                const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p.parent } } });
                 const parent = client.guild.channels.cache.get(parentData.meta.pop()._id);
                 const entry = {
                     category: parent ? parent.name : "\`Bilinmiyor\`",
