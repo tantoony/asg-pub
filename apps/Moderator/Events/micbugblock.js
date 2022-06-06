@@ -30,31 +30,6 @@ class MicBug extends ClientEvent {
                 });
             }
         }
-        const muted = cur.serverMute && !prev.serverMute;
-        const unmuted = !cur.serverMute && prev.serverMute
-        if (muted || unmuted) {
-            const entry = await message.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(logs => logs.entries.first());
-            const executor = client.guild.members.cache.get(entry.executor.id);
-            if (executor.roles.cache.has(this.data.roles["vmute"]) || executor.roles.cache.has(this.data.roles["yt"])) {
-                if (muted) client.emit("vmute", cur.member.user.id, entry.executor.idd, "[sağ tık ile]", 5);
-                if (unmuted) {
-                    await client.models.penalties.updateOne({ userId: cur.member.user.id, typeOf: "VMUTE" }, {
-                        $push: {
-                            extras: {
-                                subject: "revoke",
-                                data: {
-                                    executor: entry.executor.id,
-                                    date: new Date(),
-                                    channel: cur.channel.id,
-                                    message: "invoice"
-                                }
-                            }
-                        }
-                    });
-                    if (mentioned.voice && mentioned.voice.channel) await mentioned.voice.setMute(false);
-                }
-            }
-        }
 
     }
 }
