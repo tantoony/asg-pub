@@ -48,8 +48,8 @@ class Stat extends PrefixCommand {
                     duration: diff
                 };
                 ary.push(entry);
+                records[vLog.channelId] = ary;
             }
-            records[vLog.channelId] = ary;
         }
         console.log(records);
         /*
