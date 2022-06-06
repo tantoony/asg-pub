@@ -19,14 +19,38 @@ class Stat extends PrefixCommand {
         const mentioned = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
         //if (mentioned.user.id !== message.author.id) args = args.slice(1);
         const since = moment(new Date()).subtract(7, "days").toISOString();
-        const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
+        const _vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
         const vChannels = await client.models.channels.find({ kindOf: "GUILD_VOICE" });
         const records = {};
+        const vData = _vData.map(({
+            channelId,
+            userId,
+            self_mute,
+            self_deaf,
+            server_mute,
+            server_deaf,
+            streaming,
+            webcam,
+            created
+        }) => {
+            return {
+                channelId,
+                userId,
+                self_mute,
+                self_deaf,
+                server_mute,
+                server_deaf,
+                streaming,
+                webcam,
+                created
+            }
+        });
         for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
             const nextData = vData[t + 1];
             const diff = moment(nextData.created).diff(vLog.created);
             if (!records[vLog.channelId]) records[vLog.channelId] = [];
+            let ary = records[vLog.channelId];
             if (vLog.channelId) {
                 const vCnl_p = vChannels.find(doc => doc.meta.some(m => m._id === vLog.channelId)).parent;
                 const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p } } });
@@ -38,8 +62,9 @@ class Stat extends PrefixCommand {
                     isStreaming: vLog.webcam || vLog.streaming,
                     duration: diff
                 };
-                records[vLog.channelId].push(entry);
+                ary.push(entry);
             }
+            records[vLog.channelId] = ary;
         }
         console.log(records);
         /*
@@ -69,7 +94,7 @@ class Stat extends PrefixCommand {
         • Toplam ses: \`${new Date(records.map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").join(' ')}\`
         • Mikrofon kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
         • Kulaklık kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-     `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
+        `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
         return await message.reply(responseEmbed);
         */
         const canvas = new ChartJSNodeCanvas({ width: 960, height: 540 });
