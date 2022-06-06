@@ -1,4 +1,5 @@
 const { ClientEvent } = require('../base/utils');
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 
 class Ready extends ClientEvent {
     constructor(client) {
