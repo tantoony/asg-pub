@@ -1,7 +1,6 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 const { stripIndent } = require('common-tags');
 const moment = require("moment")
-const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { PrefixCommand } = require("../../../../base/utils");
 class Stat extends PrefixCommand {
     constructor(client) {
@@ -66,7 +65,6 @@ class Stat extends PrefixCommand {
             return res;
         };
         const daysTr = ["pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar"];
-        const canvas = new ChartJSNodeCanvas({ width: 960, height: 540 });
         const dayNum = new Date().getDay();
         const config = {
             type: "line",
