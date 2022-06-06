@@ -50,7 +50,7 @@ class UserUpdate extends ClientEvent {
             }
         });
         const points = Object.values(client.config.point);
-        let point = points.find(p => member.displayName.startWith(p));
+        let point = points.find(p => member.displayName.startsWith(p));
         const prevTaglı = client.config.tags.some(t => oldUser.username.includes(t)) || oldUser.discriminator === client.config.dis;
         const curTaglı = client.config.tags.some(t => newUser.username.includes(t)) || newUser.discriminator === client.config.dis;
         const freshTagged = !prevTaglı && curTaglı;
