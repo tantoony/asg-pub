@@ -20,57 +20,28 @@ class Stat extends PrefixCommand {
         //if (mentioned.user.id !== message.author.id) args = args.slice(1);
         const since = moment(new Date()).subtract(7, "days").toISOString();
         const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
-        const records = [];
-        let switcher = false;
-        let exChannel = null;
-        function msToTime(duration) {
-            var milliseconds = Math.floor((duration % 1000) / 100),
-                seconds = Math.floor((duration / 1000) % 60),
-                minutes = Math.floor((duration / (1000 * 60)) % 60),
-                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-            /*
-            hours = (hours < 10) ? "0" + hours : hours;
-            minutes = (minutes < 10) ? "0" + minutes : minutes;
-            seconds = (seconds < 10) ? "0" + seconds : seconds;
-            */
-            return hours + " saat, " + minutes + " dk, " + seconds + " sn";
-        }
-        let entry;
-        const Records = {};
-        for (let t = 0, c = 0; t < vData.length - 1; t + c) {
+        const vChannels = await client.models.channels.find({ kindOf: "GUILD_VOICE" });
+        const records = {};
+        for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
             const nextData = vData[t + 1];
-            if (vLog.channelId && vLog.channelId === nextData.channelId) {
-                entry = {
+            const diff = moment(nextData.created).diff(vLog.created);
+            if (!records[vLog.channelId]) records[vLog.channelId] = [];
+            if (vLog.channelId) {
+                const vCnl_p = vChannels.find(doc => doc.meta.some(m => m._id === vLog.channelId)).parent;
+                const parentData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: vCnl_p } } });
+                const parent = client.guild.channels.cache.get(parentData.meta.pop()._id);
+                const entry = {
+                    category: parent ? parent.name : "\`Bilinmiyor\`",
                     channelId: vLog.channelId,
                     isActive: !vLog.self_deaf && !vLog.self_mute && !server_mute && !server_mute,
                     isStreaming: vLog.webcam || vLog.streaming,
-                    duration: moment(vData[vData.length - c].created).diff(vLog.created, "hours")
+                    duration: diff
                 };
-            } else {
-                c = c + 1;
+                records[vLog.channelId].push(entry)
             }
-            const data = {
-                channelId: vLog.channelId,
-                isActive: !vLog.self_deaf && !vLog.self_mute && !server_mute && !server_mute,
-                isStreaming: vLog.webcam || vLog.streaming,
-                duration: moment(nextData.created).subtract(vLog.created)
-            }
-            if (exChannel && exChannel === vLog.channelId) {
-
-            } else {
-                exChannel = vLog.channelId;
-            }
-            exChannel = vLog.channelId;
-
         }
-        const mapData = await vData.map(async (data) => {
-            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: data.channelId } } });
-            const parent = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
-            data.parent = client.guild.channels.cache.get(parent.meta.pop()._id).name;
-            return data;
-        })
-        const kanalGrup = require('lodash').groupBy(mapData, "parent");
+        const kanalGrup = require('lodash').groupBy(mapData, "category");
         console.log(kanalGrup);
         /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
