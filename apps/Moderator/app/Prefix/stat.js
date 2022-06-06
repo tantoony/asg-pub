@@ -65,6 +65,7 @@ class Stat extends PrefixCommand {
             }
             return res;
         };
+        const cnlStr = Object.keys(records).sort((a, b) => records[b].map(e => e.duration).reduce((p, c) => p + c, 0) - records[a].map(e => e.duration).reduce((p, c) => p + c, 0));
         const daysTr = ["pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar"];
         const dayNum = new Date().getDay();
         const config = {
@@ -108,7 +109,8 @@ class Stat extends PrefixCommand {
         const canvas = client.canvas;
         const buffer = await canvas.renderToBuffer(config);
         const file = new MessageAttachment(buffer, "stat.png");
-        const embed = new MessageEmbed().setDescription(stripIndent` sa
+        const embed = new MessageEmbed().setDescription(stripIndent` <@${mentioned}> üyesinin ses bilgileri:
+        ${cnlStr.map(c => `<#${records[c].channelId}> ${Math.round(records[c].map(r => r.duration).reduce((p, c) => p + c, 0) / 36000000)} saat `).join("\n")}
         `).setImage("attachment://stat.png").setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor);
         return await message.reply({
             files: [file],
