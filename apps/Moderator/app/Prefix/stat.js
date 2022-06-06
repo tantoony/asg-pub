@@ -47,6 +47,7 @@ class Stat extends PrefixCommand {
         });
         for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
+            console.log(vData);
             const nextData = vData[t + 1];
             const diff = moment(nextData.created).diff(vLog.created);
             if (!records[vLog.channelId]) records[vLog.channelId] = [];
