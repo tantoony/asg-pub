@@ -20,15 +20,15 @@ class Stat extends PrefixCommand {
         //if (mentioned.user.id !== message.author.id) args = args.slice(1);
         const since = moment(new Date()).subtract(7, "days").toISOString();
         const _vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, [
-            "channelId", 
-            "self_deaf", 
-            "self_mute", 
-            "server_mute", 
+            "channelId",
+            "self_deaf",
+            "self_mute",
+            "server_mute",
             "server_mute",
             "webcam",
             "streaming",
             "_id"
-        ], { sort: 1 });
+        ], { sort: { created: 1 } });
         const vChannels = await client.models.channels.find({ kindOf: "GUILD_VOICE" });
         const records = {};
         const vData = _vData.map((d) => d);
