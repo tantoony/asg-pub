@@ -8,7 +8,9 @@ class MicBug extends ClientEvent {
     }
     async run(prev, cur) {
         const client = this.client;
-        if (cur.selfMute) {
+        const selfMuted = cur.selfMute && !prev.selfMute;
+        const unMuted = !cur.selfMute && prev.selfMute;
+        if (selfMuted || unMuted) {
             let uCooldown = this.cooldown.get(cur.member.user.id);
             if (!uCooldown) this.cooldown.set(cur.member.user.id, []);
             uCooldown = this.cooldown.get(cur.member.user.id);
