@@ -22,29 +22,7 @@ class Stat extends PrefixCommand {
         const _vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
         const vChannels = await client.models.channels.find({ kindOf: "GUILD_VOICE" });
         const records = {};
-        const vData = _vData.map(({
-            channelId,
-            userId,
-            self_mute,
-            self_deaf,
-            server_mute,
-            server_deaf,
-            streaming,
-            webcam,
-            created
-        }) => {
-            return {
-                channelId,
-                userId,
-                self_mute,
-                self_deaf,
-                server_mute,
-                server_deaf,
-                streaming,
-                webcam,
-                created
-            }
-        });
+        const vData = _vData.map((d) => d);
         for (let t = 0; t < vData.length - 1; t++) {
             const vLog = vData[t];
             console.log(vData);
