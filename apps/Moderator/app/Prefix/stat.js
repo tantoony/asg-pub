@@ -104,6 +104,7 @@ class Stat extends PrefixCommand {
                 }
             }
         }
+        const canvas = client.canvas;
         const buffer = await canvas.renderToBuffer(config);
         const file = new MessageAttachment(buffer, "stat.png");
         const embed = new MessageEmbed().setDescription(stripIndent` sa
