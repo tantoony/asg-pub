@@ -11,6 +11,7 @@ class VoiceStateUpdate extends ClientEvent {
         const unmuted = !cur.serverMute && prev.serverMute
         if (muted || unmuted) {
             const vmutes = await this.client.models.penalties.find({ typeOf: "VMUTE", userId: cur.member.user.id });
+            /*
             if (vmutes.length > 0 && vmutes.some(vmute => vmute.until.getTime() > new Date().getTime())) {
                 const entry = await message.guild.fetchAuditLogs({ type: 'MEMBER_UPDATE' }).then(logs => logs.entries.first());
                 const executor = client.guild.members.cache.get(entry.executor.id);
@@ -34,6 +35,7 @@ class VoiceStateUpdate extends ClientEvent {
                     }
                 }
             }
+            */
             if (unmuted && !mute.extras.some(extra => extra.subject === "revoke")) await cur.setMute(true);
         } else if (cur.serverMute || prev.serverMute) await cur.setMute(false);
         await this.client.models.voice.create({
