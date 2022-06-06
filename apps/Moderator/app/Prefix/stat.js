@@ -21,18 +21,56 @@ class Stat extends PrefixCommand {
         const since = moment(new Date()).subtract(7, "days").toISOString();
         const vData = await client.models.voice.find({ userId: mentioned.user.id, created: { $gt: since } }, { sort: 1 });
         const records = [];
-        /*
-        for (let i = 0; i < vData.length; i++) {
-            const entry = vData[i];
-            if (!entry.channelId) {}
-            
+        let switcher = false;
+        let exChannel = null;
+        function msToTime(duration) {
+            var milliseconds = Math.floor((duration % 1000) / 100),
+                seconds = Math.floor((duration / 1000) % 60),
+                minutes = Math.floor((duration / (1000 * 60)) % 60),
+                hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+            /*
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+            */
+            return hours + " saat, " + minutes + " dk, " + seconds + " sn";
         }
-        */
-        const kanalGrup = await vData.map(d => d).groupBy(async ({ channelId }) => {
-            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channelId } } });
-            const parent =  await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
-            return client.guild.channels.cache.get(parent.meta.pop()._id).name;
-        });
+        let entry;
+        const Records = {};
+        for (let t = 0, c = 0; t < vData.length - 1; t + c) {
+            const vLog = vData[t];
+            const nextData = vData[t + 1];
+            if (vLog.channelId && vLog.channelId === nextData.channelId) {
+                entry = {
+                    channelId: vLog.channelId,
+                    isActive: !vLog.self_deaf && !vLog.self_mute && !server_mute && !server_mute,
+                    isStreaming: vLog.webcam || vLog.streaming,
+                    duration: moment(vData[vData.length - c].created).diff(vLog.created, "hours")
+                };
+            } else {
+                c = c + 1;
+            }
+            const data = {
+                channelId: vLog.channelId,
+                isActive: !vLog.self_deaf && !vLog.self_mute && !server_mute && !server_mute,
+                isStreaming: vLog.webcam || vLog.streaming,
+                duration: moment(nextData.created).subtract(vLog.created)
+            }
+            if (exChannel && exChannel === vLog.channelId) {
+
+            } else {
+                exChannel = vLog.channelId;
+            }
+            exChannel = vLog.channelId;
+
+        }
+        const mapData = await vData.map(async (data) => {
+            const channnelData = await client.models.channels.findOne({ meta: { $elemMatch: { _id: data.channelId } } });
+            const parent = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channnelData.parent } } });
+            data.parent = client.guild.channels.cache.get(parent.meta.pop()._id).name;
+            return data;
+        })
+        const kanalGrup = require('lodash').groupBy(mapData, "parent");
         console.log(kanalGrup);
         /*
         if (mentioned.user.id !== message.author.id) args = args.slice(1);
