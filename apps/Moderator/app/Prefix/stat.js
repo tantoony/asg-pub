@@ -103,6 +103,11 @@ class Stat extends PrefixCommand {
                             suggestedMax: 100
                         }
                     }
+                },
+                elements: {
+                    line: {
+                        borderColor: "#ffffff"
+                    }
                 }
             }
         }
