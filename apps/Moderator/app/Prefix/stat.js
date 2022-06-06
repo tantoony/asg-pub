@@ -46,7 +46,7 @@ class Stat extends PrefixCommand {
                 const entry = {
                     category: parent ? parent.name : "\`Bilinmiyor\`",
                     channelId: vLog.channelId,
-                    isActive: !vLog.self_deaf && !vLog.self_mute && !server_mute && !server_mute,
+                    isActive: !vLog.self_deaf && !vLog.self_mute && !vLog.server_mute && !vLog.server_mute,
                     isStreaming: vLog.webcam || vLog.streaming,
                     duration: diff
                 };
