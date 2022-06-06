@@ -27,7 +27,8 @@ class Stat extends PrefixCommand {
             "server_mute",
             "webcam",
             "streaming",
-            "_id"
+            "_id",
+            "created"
         ], { sort: { created: 1 } });
         const records = {};
         for (let t = 0; t < vData.length - 1; t++) {
