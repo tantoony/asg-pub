@@ -11,7 +11,7 @@ class VoiceStateUpdate extends ClientEvent {
         if (vmutes.length > 0 && vmutes.some(vmute => vmute.until.getTime() > new Date().getTime())) {
             const mute = vmutes.find(vmute => vmute.until.getTime() > new Date().getTime())
             if(!cur.serverMute && !mute.extras.some(extra => extra.subject === "revoke")) await cur.setMute(true);
-        } else if (cur.serverMute && prev.serverMute) await cur.setMute(false);
+        } else if (cur.serverMute || prev.serverMute) await cur.setMute(false);
         await this.client.models.voice.create({
             channelId: cur.channelId,
             userId: cur.member.user.id,
