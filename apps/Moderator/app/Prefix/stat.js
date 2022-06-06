@@ -46,66 +46,50 @@ class Stat extends PrefixCommand {
                     channelId: vLog.channelId,
                     isActive: !vLog.self_deaf && !vLog.self_mute && !vLog.server_mute && !vLog.server_mute,
                     isStreaming: vLog.webcam || vLog.streaming,
-                    duration: diff
+                    duration: diff,
+                    day: vLog.created.getDay()
                 };
                 ary.push(entry);
                 records[vLog.channelId] = ary;
             }
-        }
-        console.log(records);
-        /*
-        if (mentioned.user.id !== message.author.id) args = args.slice(1);
-        let days = args[1] || 7;
-        if (!Data) return message.reply(`Veri bulunamadı...`);
-        const records = Data.filter(r => checkDays(r.enter) < days);
-        const birim = [
-            "Saat",
-            "Dakika",
-            "Saniye"
-        ];
-        const responseEmbed = new Discord.MessageEmbed().setDescription(stripIndent`
-        ${mentioned} kişisine ait ${days} günlük ses bilgileri:
-        **Genel Bilgileri:**
-        • ID: \`${mentioned.id}\`
-        • Kullanıcı: ${mentioned}
-        • Sunucuya Katılma Tarihi: \`<t:${Math.round(mentioned.joinedTimestamp / 1000)}:R>
-        • Geçirilen toplam süre: \`${new Date(records.map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-
-        **Ses Bilgileri:**
-        • Public ses süresi: \`${new Date(records.filter(r => r.channelType === "st_public").map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-        • Register ses süresi: \`${new Date(records.filter(r => r.channelType === "st_registry").map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-        • Private ses süsresi: \`${new Date(records.filter(r => r.channelType === "st_private").map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-
-        **Toplam Ses İstatistikleri**
-        • Toplam ses: \`${new Date(records.map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").join(' ')}\`
-        • Mikrofon kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-        • Kulaklık kapalı: \`${new Date(records.filter(r => r.selfMute).map(r => r.duration).reduce((a, b) => a + b, 0)).toISOString().substr(11, 8).toString().split(':').map((v, i) => v > 0 ? `${v} ${birim[i]}` : "").filter(str => str.length > 1).join(' ')}\`
-        `).setThumbnail(mentioned.user.displayAvatarURL({ dynamic: true })).setColor(mentioned.displayHexColor).setTitle(message.guild.name);
-        return await message.reply(responseEmbed);
-        */
+        };
+        const myData = {
+            total: Object.values(records).flat(),
+            aktif: Object.values(records).flat().filter(d => d.isActive),
+            yayın: Object.values(records).flat().filter(d => d.isStreaming)
+        };
+        function getDataDay(data) {
+            const res = [];
+            for (let d = 0; d < 7; d++) {
+                res.push(data.filter(dt => dt.day === d).map(dt => dt.duration).reduce((p, c) => c + p, 0));
+            }
+            return res;
+        };
+        const daysTr = ["pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma", "cumartesi", "pazar"];
         const canvas = new ChartJSNodeCanvas({ width: 960, height: 540 });
+        const dayNum = new Date().getDay();
         const config = {
             type: "line",
             data: {
-                labels: ["cumartesi", "pazar", "pazartesi", "salı", "çarşamba", "perşembe", "cuma"],
+                labels: daysTr.slice(dayNum, daydayNumsTr + 7),
                 datasets: [
                     {
                         label: "Yayın",
                         backgroundColor: "#7289da",
                         fill: true,
-                        data: [1.2, 3.5, 2.8, 2, 0.8, 1.2, 3]
+                        data: getDataDay(myData.yayın)
                     },
                     {
                         label: "Aktif",
                         backgroundColor: "#00FF99",
                         fill: true,
-                        data: [8, 11, 9, 3, 2, 1, 8]
+                        data: getDataDay(myData.aktif)
                     },
                     {
                         label: "Toplam",
                         backgroundColor: "#1e2124",
                         fill: true,
-                        data: [12, 13, 10, 5, 3, 5, 10]
+                        data: getDataDay(myData.total)
                     }
                 ]
             },
