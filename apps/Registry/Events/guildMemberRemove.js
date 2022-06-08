@@ -2,7 +2,7 @@ const { ClientEvent } = require("../../../base/utils");
 
 class GuildMemberRemove extends ClientEvent {
     constructor(client) {
-        super (client, {
+        super(client, {
             name: "guildMemberRemove"
         })
         this.client = client;
@@ -12,8 +12,8 @@ class GuildMemberRemove extends ClientEvent {
         const client = this.client;
         if (member.guild.id !== client.config.server) return;
         const pruneentry = await member.guild.fetchAuditLogs({ type: "MEMBER_PRUNE" }).then(logs => logs.entries.first());
-        const model = await client.models.membership.findOne({ _id: cur.user.id });
-        if (model) await client.models.membership.delete({ _id: member.user.id });
+        const model = await client.models.member.findOne({ _id: member.user.id });
+        if (model) await client.models.member.updateOne({ _id: member.user.id }, { $set: { authorized: [], roles: [] } });
         if (pruneentry && pruneentry.createdTimestamp >= Date.now() - 10000) {
             const removed = pruneentry.extra.removed;
             const days = this.audit.extra.days;
