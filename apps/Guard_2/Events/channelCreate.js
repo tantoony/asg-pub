@@ -9,6 +9,7 @@ class ChannnelCreate extends ClientEvent {
     }
 
     async rebuild(channel) {
+        const client = this.client;
         const ovs = [];
         channel.permissionOverwrites.cache.forEach((o) => {
             const lol = {
@@ -37,7 +38,7 @@ class ChannnelCreate extends ClientEvent {
     }
 
     async refix(channel) {
-        await channel.delete(`${entry.executor.username} Tarafından oluşturulmaya çalışıldı`);
+        await channel.delete(`${this.audit.executor.username} Tarafından oluşturulmaya çalışıldı`);
     }
 }
 module.exports = ChannnelCreate;

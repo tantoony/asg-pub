@@ -11,6 +11,7 @@ class RoleCreate extends ClientEvent {
     }
 
     async rebuild(role) {
+        const client = this.client;
         await client.models.roles.create({
             meta: [
                 {

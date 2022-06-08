@@ -11,6 +11,7 @@ class ChannelDelete extends ClientEvent {
     }
 
     async rebuild(channel) {
+        const client = this.client;
         let olddata = await client.models.channels.findOne({ meta: { $elemMatch: { _id: channel.id } } });
         if (!olddata) {
             const ovs = [];
