@@ -20,7 +20,7 @@ class Eval extends PrefixCommand {
         });
     }
 
-    async run(client, message, args) {
+    async run(client, message, args, data) {
         function clean(text) {
             if (typeof (text) === "string") return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
             else return text;
