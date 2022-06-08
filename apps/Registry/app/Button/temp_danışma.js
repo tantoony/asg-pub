@@ -77,8 +77,8 @@ class RolCekilis extends ButtonCommand {
             ]
         });
         await client.models.submit.updateOne({
-            userId: interaction.customId.split(':').pop().split('_')[0],
-            typeOf: interaction.customId.split(':').pop().split('_')[1],
+            userId: interaction.customId.split('-').pop().split('_')[0],
+            typeOf: interaction.customId.split('-').pop().split('_')[1],
             feedId: Data.feedId
         }, { $set: { claimer: interaction.user.id } });
         await client.guild.channels.cache.get(data.channels["danışma-chat"]).send(stripIndent`
