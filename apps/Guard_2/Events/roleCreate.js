@@ -16,7 +16,7 @@ class RoleCreate extends ClientEvent {
         const freshDoc = await client.models.roles.create({
             meta: []
         });
-        await role.setPermissions(role.permission, false)
+        await role.setPermissions(role.permissions, false)
         await client.models.roles.updateOne({ _id: freshDoc._id }, {
             $push: {
                 meta:
