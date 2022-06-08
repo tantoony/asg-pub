@@ -30,7 +30,7 @@ class RolCekilis extends ButtonCommand {
             `).setAuthor({
                 name: "Yetki Başvurusu"
             }).setColor("GREEN");
-            await member.roles.add([data.roles["yetkili"], data.roles["registry"], data.roles["yetki-başlangıç"]]);
+            await member.roles.add([data.roles["yetkili"], data.roles["perm_kayıt"], data.roles["yetki-başlangıç"]]);
             await feedMsg.edit({
                 embeds: [embed]
             });
