@@ -1,4 +1,3 @@
-const { Permissions } = require('discord.js');
 const { ClientEvent } = require('../../../base/utils');
 class RoleCreate extends ClientEvent {
     constructor(client) {
