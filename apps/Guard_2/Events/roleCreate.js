@@ -1,3 +1,4 @@
+const { Permissions } = require('discord.js');
 const { ClientEvent } = require('../../../base/utils');
 class RoleCreate extends ClientEvent {
     constructor(client) {
@@ -12,8 +13,13 @@ class RoleCreate extends ClientEvent {
 
     async rebuild(role) {
         const client = this.client;
-        await client.models.roles.create({
-            meta: [
+        const freshDoc = await client.models.roles.create({
+            meta: []
+        });
+        await role.setPermissions(role.permission, false)
+        await client.models.roles.updateOne({ _id: freshDoc._id }, {
+            $push: {
+                meta:
                 {
                     _id: role.id,
                     name: role.name,
@@ -26,9 +32,8 @@ class RoleCreate extends ClientEvent {
                     created: role.createdAt,
                     emoji: role.unicodeEmoji
                 }
-            ]
-        });
-
+            }
+        })
     }
 
     async refix(role) {
