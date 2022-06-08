@@ -33,7 +33,7 @@ class RolCekilis extends ButtonCommand {
             await member.roles.add([data.roles["yetkili"], data.roles["registry"], data.roles["yetki-başlangıç"]]);
             await feedMsg.edit({
                 embeds: [embed]
-            })
+            });
         } else {
             const embed = new MessageEmbed().setDescription(stripIndent`
             Başvuran: <@${interaction.user.id}>
@@ -44,7 +44,7 @@ class RolCekilis extends ButtonCommand {
             }).setColor("RED");
             await feedMsg.edit({
                 embeds: [embed]
-            })
+            });
         }
 
 
