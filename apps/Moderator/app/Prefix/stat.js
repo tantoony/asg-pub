@@ -45,7 +45,7 @@ class Stat extends PrefixCommand {
                     category: parent ? parent.name : "\`Bilinmiyor\`",
                     channelId: vLog.channelId,
                     isActive: !vLog.self_deaf && !vLog.self_mute && !vLog.server_mute && !vLog.server_mute,
-                    isStreaming: vLog.webcam || vLog.streaming,
+                    isStreaming: !vLog.self_deaf && !vLog.self_mute && !vLog.server_mute && !vLog.server_mute && vLog.webcam || vLog.streaming,
                     duration: diff,
                     day: vLog.created.getDay()
                 };
