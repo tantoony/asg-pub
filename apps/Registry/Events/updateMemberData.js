@@ -29,7 +29,7 @@ class GuildMemberUpdate extends ClientEvent {
 			const model = await client.models.member.findOne({ _id: cur.user.id });
 			if (!model) {
 				await client.models.member.create({
-					id: cur.user.id,
+					_id: cur.user.id,
 					roles: rolex
 				});
 			} else {
