@@ -15,10 +15,10 @@ class GuildMemberUpdate extends ClientEvent {
 		if (cur.guild.id !== client.config.server) return;
 		const eskiYetkili = prev.roles.cache.has(this.data.roles["yetkili"]) && !cur.roles.cache.has(this.data.roles["yetkili"]);
 		const yeniYetkili = !prev.roles.cache.has(this.data.roles["yetkili"]) && cur.roles.cache.has(this.data.roles["yetkili"]);
-		const pointed = (client.config.tags.some((t) => target.user.username.includes(t)) || client.config.dis === target.user.discriminator) ? client.config.point.tagged : client.config.point.default;
+		const pointed = (client.config.tags.some((t) => cur.user.username.includes(t)) || client.config.dis === cur.user.discriminator) ? client.config.point.tagged : client.config.point.default;
 		const point = Object.keys(client.config.point).find(p => cur.displayName.includes(p));
-		if (point && yeniYetkili) await cur.setNickname(cur.displayName.replace(point, client.config.point.staff));
-		if (point && eskiYetkili) await cur.setNickname(cur.displayName.replace(point, client.config.point.pointed));
+		if (point && yeniYetkili) await cur.setNickname(cur.displayName.replace(point, pointed));
+		if (point && eskiYetkili) await cur.setNickname(cur.displayName.replace(point, pointed));
 		const exeMember = cur.guild.members.cache.get(this.audit.executor.id);
 		const jails = await client.models.penalties.find({ userId: cur.user.id, typeOf: "JAIL", until: { $ne: "p" } });
 		if (jails.length > 0 && jails.some(jail => jail.until.getTime() > new Date().getTime())) {
