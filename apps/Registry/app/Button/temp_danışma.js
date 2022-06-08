@@ -82,7 +82,7 @@ class RolCekilis extends ButtonCommand {
             feedId: Data.feedId
         }, { $set: { claimer: interaction.user.id } });
         await client.guild.channels.cache.get(data.channels["danışma-chat"]).send(stripIndent`
-        Merhaba <@${Data.userId}>, talebiniz <@${interaction.user.id}> tarafından kabul edilmiştir. Sizin için oluşturulan <#${channel.id}> kanalına bekleniyorsunuz.
+        Merhaba <@${Data.userId}>, talebiniz <@${interaction.user.id}> tarafından kabul edilmiştir. Lütfen bekleme odasına geçiniz.
         `);
 
     }
