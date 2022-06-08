@@ -13,7 +13,7 @@ class ControlBan extends ClientEvent {
         const Banneds = new Map();
         async function revoke(params) {
             const now = new Date();
-            let asd = await this.client.models.penalties.find({ duration: { $ne: "p" } });
+            let asd = await this.client.models.penalties.find({ duration: { $ne: null } });
             asd.filter((ban) => ban.until.getTime() < new Date().getTime() + 1000 * 60 * 60).forEach(async (ban) => {
                 if (now.getTime() < ban.until.getTime()) {
                     switch (ban.typeOf) {
@@ -48,13 +48,13 @@ class ControlBan extends ClientEvent {
 
         async function reload(params) {
             const now = new Date();
-            let asd = await this.client.models.penalties.find({ duration: { $ne: "p" } });
+            let asd = await this.client.models.penalties.find({ duration: { $ne: null } });
             
         }
 
         const mapcron = new CronJob('*/1 * * * * *', async () => {
             const now = new Date();
-            let asd = await this.client.models.penalties.find({ duration: { $ne: "p" } });
+            let asd = await this.client.models.penalties.find({ duration: { $ne: null } });
             asd.filter((ban) => ban.until.getTime() < new Date().getTime() + 1000 * 60 * 60).forEach(async (ban) => {
                 if (now.getTime() < ban.until.getTime()) {
                     switch (ban.typeOf) {

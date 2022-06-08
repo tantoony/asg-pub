@@ -20,7 +20,7 @@ class GuildMemberUpdate extends ClientEvent {
 		if (point && yeniYetkili) await cur.setNickname(cur.displayName.replace(point, pointed));
 		if (point && eskiYetkili) await cur.setNickname(cur.displayName.replace(point, pointed));
 		const exeMember = cur.guild.members.cache.get(this.audit.executor.id);
-		const jails = await client.models.penalties.find({ userId: cur.user.id, typeOf: "JAIL", until: { $ne: "p" } });
+		const jails = await client.models.penalties.find({ userId: cur.user.id, typeOf: "JAIL", until: { $ne: null } });
 		if (jails.length > 0 && jails.some(jail => jail.until.getTime() > new Date().getTime())) {
 			const jail = jails.find(j => j.until.getTime() > new Date().getTime())
 			if (jail && !jail.extras.some(extra => extra.subject === "revoke") && !cur.roles.cache.has(this.data.roles["prisoner"]) && !this.audit.executor.bot) {
