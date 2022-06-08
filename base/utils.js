@@ -46,7 +46,7 @@ class ClientEvent {
 		try {
 			this.run(...args);
 		} catch (error) {
-			this.client.log(error, this.name);
+			throw error
 		}
 	}
 
@@ -55,7 +55,7 @@ class ClientEvent {
 		try {
 			this.rebuild(...params);
 		} catch (error) {
-			this.client.log(error, this.name);
+			throw error
 		}
 	}
 
@@ -67,7 +67,7 @@ class ClientEvent {
 		try {
 			this.refix(...params);
 		} catch (error) {
-			this.client.log(error, this.name);
+			throw error
 		}
 	}
 
