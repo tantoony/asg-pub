@@ -68,7 +68,7 @@ class PrefixCommandCreate extends ClientEvent {
         if (uCooldown && (uCooldown > Date.now())) return message.channel.send(`${data.emojis["time"]} Komutu tekrar kullanabilmek için lütfen **${Math.ceil((time - Date.now()) / 1000)}** saniye bekle!`);
         client.log(`[(${message.author.id})] ${message.author.username} ran command [${cmd.info.name}]`, "cmd");
         try {
-            cmd.run(client, message, args);
+            cmd.run(client, message, args, this.data);
             cmd.cooldown.set(message.author.id, cmd.info.cooldown);
         } catch (e) {
             console.log(e);
