@@ -33,10 +33,6 @@ class GuildMemberUpdate extends ClientEvent {
 				client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Jail Açma", "Perma", 1);
 			}
 		}
-
-	}
-
-	async refix(prev, cur) {
 		const role = cur.guild.roles.cache.get(this.audit.changes[0].new[0].id);
 		const perms = [
 			"ADMINISTRATOR",
@@ -54,13 +50,14 @@ class GuildMemberUpdate extends ClientEvent {
 			"MANAGE_ROLES",
 			"MANAGE_WEBHOOKS"
 		];
-		if (perms.some(perm => role.permissions.has(perm)) && !this.audit.executor.bot) {
-			const key = this.audit.changes[0].key;
-			if (key === '$add') await cur.roles.remove(role);
-			if (key === '$remove') await cur.roles.add(role);
-			const exeMember = cur.guild.members.cache.get(this.audit.executor.id);
-			client.handler.emit("jail", this.audit.executor.id, this.client.user.id, this.action, "p", `auditId: ${this.audit.id}`);
-		} else return;
+		if (perms.some(perm => role.permissions.has(perm)) && !this.audit.executor.bot) await this.refix(prev, cur);
+
+	}
+
+	async refix(prev, cur) {
+		const key = this.audit.changes[0].key;
+		if (key === '$add') await cur.roles.remove(role);
+		if (key === '$remove') await cur.roles.add(role);
 	}
 }
 
