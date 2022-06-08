@@ -34,10 +34,10 @@ class Eval extends PrefixCommand {
 
             const all = await message.reply(clean(evaled), { code: "xl" });
             message.delete();
-            all.delete({ timeout: 5000 });
+            all.delete({ timeout: 5_000 });
         } catch (err) {
             message.reply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``).then(msg => msg.delete({ timeout: 5000 }));
-            message.delete({ timeout: 1000 });
+            message.delete({ timeout: 10_000 });
         }
 
     }
