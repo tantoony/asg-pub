@@ -21,6 +21,7 @@ class ChannnelCreate extends ClientEvent {
             ovs.push(lol);
         });
         const freshDoc = await client.models.channels.create({
+            keyConf: null,
             kindOf: channel.type,
             parent: channel.parentId,
             meta: [],

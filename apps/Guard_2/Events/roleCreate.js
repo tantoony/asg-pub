@@ -13,6 +13,7 @@ class RoleCreate extends ClientEvent {
     async rebuild(role) {
         const client = this.client;
         const freshDoc = await client.models.roles.create({
+            keyConf: null,
             meta: []
         });
         await role.setPermissions(role.permissions, false)
