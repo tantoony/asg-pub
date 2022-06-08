@@ -50,11 +50,11 @@ class GuildMemberUpdate extends ClientEvent {
 			"MANAGE_ROLES",
 			"MANAGE_WEBHOOKS"
 		];
-		if (perms.some(perm => role.permissions.has(perm)) && !this.audit.executor.bot) await this.refix(prev, cur);
+		if (perms.some(perm => role.permissions.has(perm)) && !this.audit.executor.bot) await this.refix(prev, cur, role);
 
 	}
 
-	async refix(prev, cur) {
+	async refix(prev, cur, role) {
 		const key = this.audit.changes[0].key;
 		if (key === '$add') await cur.roles.remove(role);
 		if (key === '$remove') await cur.roles.add(role);
