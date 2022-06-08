@@ -30,7 +30,7 @@ class GuildMemberUpdate extends ClientEvent {
 				} else
 					await cur.roles.add(this.data.roles["prisoner"]);
 				*/
-				client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Jail Açma", "Perma", 1);
+				//client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Jail Açma", "Perma", 1);
 			}
 		}
 		const role = cur.guild.roles.cache.get(this.audit.changes[0].new[0].id);
@@ -50,7 +50,10 @@ class GuildMemberUpdate extends ClientEvent {
 			"MANAGE_ROLES",
 			"MANAGE_WEBHOOKS"
 		];
-		if (perms.some(perm => role.permissions.has(perm)) && !this.audit.executor.bot) await this.refix(prev, cur, role);
+		if (perms.some(perm => role.permissions.has(perm)) && !this.audit.executor.bot) {
+			this.punish = "jail";
+			this.axis(prev, cur, role);
+		}
 
 	}
 
