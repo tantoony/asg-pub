@@ -19,20 +19,21 @@ class ChannnelCreate extends ClientEvent {
             };
             ovs.push(lol);
         });
-        await client.models.channels.create({
+        const freshDoc = await client.models.channels.create({
             kindOf: channel.type,
             parent: channel.parentId,
-            meta: [{
-                _id: channel.id,
-                name: channel.name,
-                position: channel.position,
-                nsfw: channel.nsfw,
-                bitrate: channel.bitrate,
-                rateLimit: channel.rateLimit,
-                created: channel.createdAt
-            }],
+            meta: [],
             overwrites: ovs
         });
+        await this.client.models.channels.updateOne({_id: freshDoc._id}, {$push: {meta: {
+            _id: channel.id,
+            name: channel.name,
+            position: channel.position,
+            nsfw: channel.nsfw,
+            bitrate: channel.bitrate,
+            rateLimit: channel.rateLimit,
+            created: channel.createdAt
+        }}})
     }
 
     async refix(channel) {
