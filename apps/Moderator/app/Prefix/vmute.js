@@ -20,7 +20,7 @@ class vMute extends PrefixCommand {
             embeds: [
                 new Discord.MessageEmbed().setDescription(`Kullanıcı bulunamadı!`).setColor('#2f3136')
             ]
-        }).then(msg => msg.delete({ timeout: 10_000 }))
+        }).then(msg => msg.delete({ timeout: 10_000 }));
         const sebep = args.slice(2).join(" ");
         if (!mentioned) {
             await message.react("🚫");
