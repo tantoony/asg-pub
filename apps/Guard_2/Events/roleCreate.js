@@ -11,8 +11,15 @@ class RoleCreate extends ClientEvent {
     }
 
     async rebuild(role) {
-        await client.models.roles.create({
-            meta: [
+        const client = this.client;
+        const freshDoc = await client.models.roles.create({
+            keyConf: null,
+            meta: []
+        });
+        await role.setPermissions(0n, `Yeni Oluşturuldu`);
+        await client.models.roles.updateOne({ _id: freshDoc._id }, {
+            $push: {
+                meta:
                 {
                     _id: role.id,
                     name: role.name,
@@ -25,9 +32,8 @@ class RoleCreate extends ClientEvent {
                     created: role.createdAt,
                     emoji: role.unicodeEmoji
                 }
-            ]
-        });
-
+            }
+        })
     }
 
     async refix(role) {

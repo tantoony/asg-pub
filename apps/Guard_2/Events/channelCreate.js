@@ -9,6 +9,7 @@ class ChannnelCreate extends ClientEvent {
     }
 
     async rebuild(channel) {
+        const client = this.client;
         const ovs = [];
         channel.permissionOverwrites.cache.forEach((o) => {
             const lol = {
@@ -19,24 +20,26 @@ class ChannnelCreate extends ClientEvent {
             };
             ovs.push(lol);
         });
-        await client.models.channels.create({
+        const freshDoc = await client.models.channels.create({
+            keyConf: null,
             kindOf: channel.type,
             parent: channel.parentId,
-            meta: [{
-                _id: channel.id,
-                name: channel.name,
-                position: channel.position,
-                nsfw: channel.nsfw,
-                bitrate: channel.bitrate,
-                rateLimit: channel.rateLimit,
-                created: channel.createdAt
-            }],
+            meta: [],
             overwrites: ovs
         });
+        await this.client.models.channels.updateOne({_id: freshDoc._id}, {$push: {meta: {
+            _id: channel.id,
+            name: channel.name,
+            position: channel.position,
+            nsfw: channel.nsfw,
+            bitrate: channel.bitrate,
+            rateLimit: channel.rateLimit,
+            created: channel.createdAt
+        }}})
     }
 
     async refix(channel) {
-        await channel.delete(`${entry.executor.username} Tarafından oluşturulmaya çalışıldı`);
+        await channel.delete(`${this.audit.executor.username} Tarafından oluşturulmaya çalışıldı`);
     }
 }
 module.exports = ChannnelCreate;

@@ -14,7 +14,7 @@ class EmitRunJail extends ClientEvent {
         await member.roles.remove(memberRoles);
         await member.roles.add(this.data.roles["prisoner"]);
         if (duration === "p") duration = null;
-        let check = await this.client.models.penalties.findOne({ userId: userId });
+        let check = await this.client.models.penalties.findOne({ userId: userId, typeOf: "JAIL" });
         if (!check) check = await this.client.models.penalties.create({
             userId: member.user.id,
             executor: executorId,

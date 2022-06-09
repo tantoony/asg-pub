@@ -3,7 +3,7 @@ class Eval extends PrefixCommand {
 
     constructor(client) {
         super(client, {
-            name: "eval",
+            name: "neval",
             description: "Açıklama Belirtilmemiş.",
             usage: "Kullanım Belirtilmemiş.",
             examples: ["Örnek Bulunmamakta"],
@@ -27,7 +27,7 @@ class Eval extends PrefixCommand {
         }
         try {
             const code = message.content.split(' ').slice(1).join(' ');
-            let evaled = eval(code);
+            let evaled = eval("(async () => {" + code + "})()");
 
             if (typeof evaled !== "string")
                 evaled = require("util").inspect(evaled);
@@ -39,7 +39,6 @@ class Eval extends PrefixCommand {
             message.reply(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``).then(msg => msg.delete({ timeout: 5000 }));
             message.delete({ timeout: 10_000 });
         }
-
 
     }
 

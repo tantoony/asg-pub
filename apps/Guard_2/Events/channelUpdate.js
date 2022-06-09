@@ -9,6 +9,7 @@ class ChannelUpdate extends ClientEvent {
         this.client = client;
     }
     async rebuild(oldChannel, curChannel) {
+        const client = this.client;
         let olddata = await client.models.channels.findOne({ meta: { $elemMatch: { _id: oldChannel.id } } });
         if (!olddata) {
             const ovs = [];

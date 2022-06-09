@@ -13,8 +13,7 @@ class GuildMemberUpdate extends ClientEvent {
 	async run(prev, cur) {
 		const client = this.client;
 		if (cur.guild.id !== client.config.server) return;
-		const exeMember = cur.guild.members.cache.get(this.audit.executor.id);
-		const jails = await client.models.penalties.find({ userId: cur.user.id, typeOf: "JAIL", until: { $ne: "p" } });
+		const jails = await client.models.penalties.find({ userId: cur.user.id, typeOf: "JAIL", until: { $ne: null } });
 		if (jails.length > 0 && jails.some(jail => jail.until.getTime() > new Date().getTime())) {
 			const jail = jails.find(j => j.until.getTime() > new Date().getTime())
 			if (jail && !jail.extras.some(extra => extra.subject === "revoke") && !cur.roles.cache.has(this.data.roles["prisoner"]) && !this.audit.executor.bot) {
@@ -24,13 +23,9 @@ class GuildMemberUpdate extends ClientEvent {
 				} else
 					await cur.roles.add(this.data.roles["prisoner"]);
 				*/
-				client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Jail Açma", "Perma", 1);
+				//client.handler.emit("jail", exeMember.user.id, this.client.user.id, "* Jail Açma", "Perma", 1);
 			}
 		}
-
-	}
-
-	async refix(prev, cur) {
 		const role = cur.guild.roles.cache.get(this.audit.changes[0].new[0].id);
 		const perms = [
 			"ADMINISTRATOR",
@@ -49,12 +44,16 @@ class GuildMemberUpdate extends ClientEvent {
 			"MANAGE_WEBHOOKS"
 		];
 		if (perms.some(perm => role.permissions.has(perm)) && !this.audit.executor.bot) {
-			const key = this.audit.changes[0].key;
-			if (key === '$add') await cur.roles.remove(role);
-			if (key === '$remove') await cur.roles.add(role);
-			const exeMember = cur.guild.members.cache.get(this.audit.executor.id);
-			client.handler.emit("jail", this.audit.executor.id, this.client.user.id, this.action, "p", `auditId: ${this.audit.id}`);
-		} else return;
+			this.punish = "jail";
+			this.axis(prev, cur, role);
+		}
+
+	}
+
+	async refix(prev, cur, role) {
+		const key = this.audit.changes[0].key;
+		if (key === '$add') await cur.roles.remove(role);
+		if (key === '$remove') await cur.roles.add(role);
 	}
 }
 

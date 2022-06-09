@@ -13,9 +13,13 @@ class RoleUpdate extends ClientEvent {
 
     async rebuild(oldRole, curRole) {
         let roleData = await this.client.models.roles.findOne({ meta: { $elemMatch: { _id: oldRole.id } } });
-        if (!roleData) await this.client.models.roles.create({
-            meta: [
-                {
+        if (!roleData) roleData = await this.client.models.roles.create({
+            keyConf: null,
+            meta: []
+        });
+        await this.client.models.roles.updateOne({ _id: roleData._id }, {
+            $push: {
+                meta: {
                     _id: curRole.id,
                     name: curRole.name,
                     icon: curRole.icon,
@@ -27,8 +31,8 @@ class RoleUpdate extends ClientEvent {
                     created: curRole.createdAt,
                     emoji: curRole.unicodeEmoji
                 }
-            ]
-        });
+            }
+        })
     }
 
 

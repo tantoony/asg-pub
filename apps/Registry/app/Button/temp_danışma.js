@@ -1,6 +1,6 @@
 const { stripIndent } = require("common-tags/lib");
 const { ButtonCommand } = require("../../../../base/utils");
-const { MessageEmbed, TextInputComponent } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 class RolCekilis extends ButtonCommand {
     constructor(client) {
         super(client, {
@@ -19,7 +19,8 @@ class RolCekilis extends ButtonCommand {
             content: "Veri Bulunamadı",
             ephemeral: true
         });
-        await interaction.component.setDisabled();
+        await interaction.components[0].setDisabled();
+        /*
         const member = client.guild.members.cache.get(interaction.customId.split('-').pop().split('_')[0]);
         if (!member) await interaction.reply({
             content: "Kullanıcı Bulunamadı",
@@ -45,6 +46,7 @@ class RolCekilis extends ButtonCommand {
                 }
             ]
         });
+        */
         const embed = new MessageEmbed().setDescription(stripIndent`
         Başvuran: <@${member.user.id}>
         Onaylayan: <@${interaction.user.id}>
@@ -52,15 +54,6 @@ class RolCekilis extends ButtonCommand {
             iconURL: interaction.user.avatarURL(),
             name: "Yetki Başvurusu"
         }).setColor("DARK_RED");
-        const message = await client.guild.channels.cache.get(data.channels["danışma-feed"]).messages.fetch(Data.feedId);
-        const txti = new TextInputComponent({
-            placeholder: "sebep",
-            type: 4,
-            style: "SHORT",
-            customId: `temp_danışma_karar:${message.id}_ret`,
-            label: "Başvuruyu Reddet",
-            required: true
-        });
         await client.guild.channels.cache.get(data.channels["danışma-log"]).send({
             embeds: [embed],
             components: [
@@ -70,13 +63,13 @@ class RolCekilis extends ButtonCommand {
                         {
                             type: "BUTTON",
                             style: "SUCCESS",
-                            customId: `temp_danışma_karar:${message.id}_onay`,
+                            customId: `temp_danışma_karar-${member.user.id}_onay`,
                             label: "Yetki Başlat"
                         },
                         {
                             type: "BUTTON",
                             style: "DANGER",
-                            customId: `temp_danışma_karar:${message.id}_ret`,
+                            customId: `temp_danışma_karar-${member.user.id}_ret`,
                             label: "Reddet"
                         }
                     ]
@@ -84,11 +77,12 @@ class RolCekilis extends ButtonCommand {
             ]
         });
         await client.models.submit.updateOne({
-            userId: interaction.customId.split(':').pop().split('_')[0],
-            typeOf: interaction.customId.split(':').pop().split('_')[1]
+            userId: interaction.customId.split('-').pop().split('_')[0],
+            typeOf: interaction.customId.split('-').pop().split('_')[1],
+            feedId: Data.feedId
         }, { $set: { claimer: interaction.user.id } });
         await client.guild.channels.cache.get(data.channels["danışma-chat"]).send(stripIndent`
-        Merhaba <@${Data.userId}>, talebiniz <@${interaction.user.id}> tarafından kabul edilmiştir. Sizin için oluşturulan <#${channel.id}> kanalına bekleniyorsunuz.
+        Merhaba <@${Data.userId}>, talebiniz <@${interaction.user.id}> tarafından kabul edilmiştir. Lütfen bekleme odasına geçiniz.
         `);
 
     }
