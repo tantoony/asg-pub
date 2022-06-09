@@ -1,4 +1,5 @@
 const { PrefixCommand } = require("../../../../base/utils");
+const { MessageEmbed } = require('discord.js');
 class unJail extends PrefixCommand {
     constructor(client) {
         super(client, {
