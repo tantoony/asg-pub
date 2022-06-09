@@ -44,7 +44,7 @@ class unJail extends PrefixCommand {
                 }
             }
         });
-        await mentioned.roles.add(Data.extras.filter(r => e.subject === "roles").map(e => e.data));
+        await mentioned.roles.add(Data.extras.filter(e => e.subject === "roles").map(e => e.data));
         await mentioned.roles.remove(data.roles["prisoner"]);
         await message.react("👍");
         // client.cmdCooldown[message.author.id][this.info.name] = Date.now() + this.info.cooldown;
