@@ -10,7 +10,7 @@ class vMute extends PrefixCommand {
             examples: ["vmute 674565119161794560 10 botları kötü yapıyor"],
             category: "Moderasyon",
             aliases: ["sus", "vm"],
-            accaptedPerms: ["vmute", "yt"],
+            accaptedPerms: ["perm_vmute", "yt"],
             cooldown: 10000
         })
     }
