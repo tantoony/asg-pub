@@ -1,4 +1,5 @@
-const pm2 = require('pm2')
+const pm2 = require('pm2');
+const cron = require('cron');
 
 pm2.connect(function () {
     /*

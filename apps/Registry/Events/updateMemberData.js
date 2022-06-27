@@ -26,12 +26,7 @@ class GuildMemberUpdate extends ClientEvent {
 			ohal = list.map(item => item.name).filter(item => item.startsWith("CD")).length > 0;
 		});
 		if (!ohal) {
-			let rolex = [];
-			cur.roles.cache.map((r) => r.id).forEach((r) => {
-				client.models.roles.findOne({ meta: { $elemMatch: { _id: r } } }).then((doc) => {
-					rolex.push(doc._id);
-				});
-			});
+			let rolex = cur.roles.cache.map((r) => r.id);
 			const model = await client.models.member.findOne({ _id: cur.user.id });
 			if (!model) {
 				await client.models.member.create({

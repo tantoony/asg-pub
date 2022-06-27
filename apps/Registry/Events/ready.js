@@ -20,12 +20,7 @@ class Ready extends ClientEvent {
 			.catch(console.error);
 		}
 		await client.guild.members.cache.forEach(async (member) => {
-			let rolex = [];
-			member.roles.cache.map((r) => r.id).forEach((r) => {
-				client.models.roles.findOne({ meta: { $elemMatch: { _id: r } } }).then((doc) => {
-					rolex.push(doc._id);
-				});
-			});
+			let rolex = member.roles.cache.map((r) => r.id);
 			const doc = await this.client.models.member.findOne({ _id: member.user.id });
 			if (!doc) {
 				await this.client.models.member.create({
