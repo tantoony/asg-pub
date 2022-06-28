@@ -27,15 +27,19 @@ class ChannnelCreate extends ClientEvent {
             meta: [],
             overwrites: ovs
         });
-        await this.client.models.channels.updateOne({_id: freshDoc._id}, {$push: {meta: {
-            _id: channel.id,
-            name: channel.name,
-            position: channel.position,
-            nsfw: channel.nsfw,
-            bitrate: channel.bitrate,
-            rateLimit: channel.rateLimit,
-            created: channel.createdAt
-        }}})
+        await this.client.models.channels.updateOne({ _id: freshDoc._id }, {
+            $push: {
+                meta: {
+                    _id: channel.id,
+                    name: channel.name,
+                    position: channel.position,
+                    nsfw: channel.nsfw,
+                    bitrate: channel.bitrate,
+                    rateLimit: channel.rateLimit,
+                    created: channel.createdAt
+                }
+            }
+        })
     }
 
     async refix(channel) {

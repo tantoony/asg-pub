@@ -73,6 +73,27 @@ class ClientEvent {
 
 }
 
+
+class Command {
+	constructor(client, {
+		name = null,
+		description = null,
+		customId = null,
+		disabled = false,
+		dirname = null,
+		intChannel = null,
+		cooldown = new Map(),
+		enabled = true,
+		time = 3000,
+		options = [],
+		ownerOnly = false,
+		algorithm = null,
+		args = []
+	})
+	
+
+}
+
 class SlashCommand extends ApplicationCommand {
 	constructor(client, {
 		name = null,
@@ -395,7 +416,7 @@ class PrefixCommand {
 const models = {
 	member: model("meta_members", new Schema({
 		_id: String,
-		roles: [Types.ObjectId],
+		roles: [String],
 		afk_data: {
 			note: String,
 			created: Date,
@@ -520,7 +541,6 @@ const models = {
 		}
 	})),
 	cmd: model("log_cmd", new Schema({
-		_id: Types.ObjectId,
 		cmd: String,
 		executorId: String,
 		args: String,

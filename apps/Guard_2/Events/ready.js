@@ -31,7 +31,6 @@ class Ready extends ClientEvent {
 					}
 				]
 			});
-			this.client.log(`${role.name} başarıyla yedeklendi`);
 		}
 	}
 }
