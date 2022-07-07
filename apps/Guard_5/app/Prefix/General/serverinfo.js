@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const Command = require("../../../Base/Command");
-const low = require('lowdb');
 const { stripIndents } = require('common-tags');
 const { checkDays, rain } = require('../../../../../HELPERS/functions');
 const moment = require("moment")
@@ -21,11 +20,6 @@ class Call extends Command {
     }
 
     async run(client, message, args) {
-        const utils = await low(client.adapters('utils'));
-        const roles = await low(client.adapters('roles'));
-        const emojis = await low(client.adapters('emojis'));
-        const channels = await low(client.adapters('channels'));
-
         const embed = new Discord.MessageEmbed().setDescription(stripIndents`
         • Sunucunun adı: **${message.guild.name}**
         • Sunucunun ID'si: \`${message.guild.id}\`
