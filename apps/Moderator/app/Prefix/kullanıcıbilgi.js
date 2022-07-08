@@ -44,7 +44,7 @@ class KB extends Command {
                     const myProfile = await Profile.findOne({ _id: mentioned.user.id });
                     const İnvdata = await InviteData.findOne({ _id: mentioned.user.id });
                     let embed2 = new MessageEmbed().setColor("RANDOM").setDescription(`
-                    Your invites: **${rain(client, Data.records.length)}**
+                    Your invites: **${rain(client, İnvdata.records.length)}**
                     Your xp: **${myProfile ? myProfile.xp : 0}**
                     Your register data: **${registertotal}**`)
                       
